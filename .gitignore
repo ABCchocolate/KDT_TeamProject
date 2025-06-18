@@ -1,100 +1,45 @@
-# Created by https://www.toptal.com/developers/gitignore/api/java,eclipse
-# Edit at https://www.toptal.com/developers/gitignore?templates=java,eclipse
-
-### Eclipse ###
+# === Eclipse / STS 관련 ===
 .metadata
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
 .settings/
-.loadpath
-.recommenders
-
-# External tool builders
-.externalToolBuilders/
-
-# Locally stored "Eclipse launch configurations"
-*.launch
-
-# PyDev specific (Python IDE for Eclipse)
-*.pydevproject
-
-# CDT-specific (C/C++ Development Tooling)
-.cproject
-
-# CDT- autotools
-.autotools
-
-# Java annotation processor (APT)
-.factorypath
-
-# PDT-specific (PHP Development Tools)
-.buildpath
-
-# sbteclipse plugin
-.target
-
-# Tern plugin
-.tern-project
-
-# TeXlipse plugin
-.texlipse
-
-# STS (Spring Tool Suite)
+.project
+.classpath
 .springBeans
-
-# Code Recommenders
-.recommenders/
-
-# Annotation Processing
+.sts4-cache/
+.externalToolBuilders/
+*.launch
+*.pydevproject
+.cproject
+.autotools
+.factorypath
+.loadpath
+.buildpath
 .apt_generated/
 .apt_generated_test/
-
-# Scala IDE specific (Scala & Java development for Eclipse)
 .cache-main
 .scala_dependencies
 .worksheet
+.tern-project
+.texlipse
+target/
+tmp/
+bin/
 
-# Uncomment this line if you wish to ignore the project description file.
-# Typically, this file would be tracked if it contains build/dependency configurations:
-#.project
+# === OS / 시스템 파일 ===
+*.DS_Store
+*.swp
+*.bak
+*~.nib
 
-### Eclipse Patch ###
-# Spring Boot Tooling
-.sts4-cache/
-
-### Java ###
-# Compiled class file
+# === 빌드/배포 산출물 ===
 *.class
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
 *.jar
 *.war
-*.nar
-*.ear
 *.zip
+*.ear
+*.nar
 *.tar.gz
-*.rar
+*.log
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# === JVM 크래시 로그 ===
 hs_err_pid*
 replay_pid*
-
-# End of https://www.toptal.com/developers/gitignore/api/java,eclipsetarget/
-*.DS_Store
-target/
-*.class
-*.DS_Store
