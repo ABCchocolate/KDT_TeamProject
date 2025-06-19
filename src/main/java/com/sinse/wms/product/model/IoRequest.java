@@ -9,7 +9,7 @@ public class IoRequest {
 	private Product product; //product_id;
 	private int quantity;
 	private Location location; //location_id;
-	private int request_member_id;
+	private Member request_member_id;
 	private String request_reason;
 	private RequestStatus status; //ststus_id;
 	private Date request_at;
