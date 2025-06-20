@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -31,6 +33,9 @@ public class LoginLayout extends JFrame {
 	JButton bt_login;
 	JSeparator la_seperator;
 
+	AuthIDFrame authIDFrame;
+	AuthPwdFrame authPwdFrame;
+	
 	String id;
 	String pwd;
 
@@ -117,6 +122,19 @@ public class LoginLayout extends JFrame {
 				JOptionPane.showMessageDialog(this, "비밀번호를 입력해주세요.");
 			} else {
 				check();
+			}
+		});
+		
+		la_find_id.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				authIDFrame = new AuthIDFrame();
+			}
+		});
+		la_find_pw.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				authPwdFrame = new AuthPwdFrame();
 			}
 		});
 
