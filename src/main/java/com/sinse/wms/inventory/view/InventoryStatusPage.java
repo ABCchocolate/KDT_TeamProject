@@ -3,26 +3,39 @@ package com.sinse.wms.inventory.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import com.sinse.wms.common.Config;
+import com.sinse.wms.common.util.ExcelFileExport;
+import com.sinse.wms.common.util.GetSaveFilePath;
+import com.sinse.wms.common.util.PdfFileExport;
+import com.sinse.wms.common.view.button.OutLineButton;
 import com.sinse.wms.common.view.content.BaseContentPage;
 import com.sinse.wms.common.view.content.LabeledComboBox;
+import com.sinse.wms.inventory.model.InventoryTableModel;
 
 public class InventoryStatusPage extends BaseContentPage {
     JPanel p_wrapper;
     LabeledComboBox[] filters;
     
+    InventoryTableModel tableModel;
     JTable table;
     JScrollPane scroll;
     JPanel p_bottom;	//버튼들을 모아둘 패널
-    JButton bt_search;
-    JButton bt_excel;
-    JButton bt_pdf;
+    OutLineButton bt_search;
+    OutLineButton bt_excel;
+    OutLineButton bt_pdf;
+    
+    //테이블에 들어갈 컬럼명 정의
+    List<String> columns = new ArrayList(Arrays.asList("No", "상품명", "품목코드", "현재 재고량", "적정재고량", "주문 필요여부"));
 
     public InventoryStatusPage(Color color) {
     	// ... 기본 스타일 설정 ...
@@ -32,12 +45,13 @@ public class InventoryStatusPage extends BaseContentPage {
     	 * 		생성
     	 *--------------------------------------------------------------------------- */
         p_wrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 7));
-        table = new JTable();
+        tableModel = new InventoryTableModel(columns);
+        table = new JTable(tableModel);
         scroll = new JScrollPane(table);
         p_bottom = new JPanel();
-        bt_search = new JButton("조회하기");
-        bt_excel = new JButton("excel 다운받기");
-        bt_pdf = new JButton("pdf 다운받기");
+        bt_search = new OutLineButton("조회하기", 10, 1, Config.PRIMARY_COLOR, Color.WHITE);
+        bt_excel = new OutLineButton("excel 다운받기", 10, 1, Config.PRIMARY_COLOR,  Color.WHITE);
+        bt_pdf = new OutLineButton("pdf 다운받기", 10, 1, Config.PRIMARY_COLOR,  Color.WHITE);
         
         /*---------------------------------------------------------------------------
     	 * 		스타일 지정
@@ -71,17 +85,22 @@ public class InventoryStatusPage extends BaseContentPage {
 
         //조회 버튼 이벤트
   		bt_search.addActionListener(e->{
-  			System.out.println("조회 버튼 눌렸당");
+  			
   		});
   		
   		//엑셀 버튼 이벤트
   		bt_excel.addActionListener(e->{
-  			System.out.println("엑셀 버튼 눌렸당");
+  			String path = GetSaveFilePath.saveFilePath();		//사용자에게 저장할 파일 경로 받기
+  			String msg = ExcelFileExport.exportToExcel(columns, tableModel, path);		//excel export
+  			JOptionPane.showMessageDialog(this, msg);		//결과 메시지 띄우기
   		});
   		
   		//pdf 버튼 이벤트
   		bt_pdf.addActionListener(e->{
-  			System.out.println("pdf 버튼 눌렸당");
+  			String path = GetSaveFilePath.saveFilePath();		//사용자에게 저장할 파일 경로 받기
+  			String msg = PdfFileExport.exportToPdf(columns, tableModel, path, "재고 테이블");		//pdf export
+  			JOptionPane.showMessageDialog(this, msg);		//결과 메시지 띄우기
+  			
   		});
   		
         
