@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -12,9 +13,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.Border;
 
 import com.sinse.wms.common.Config;
-import com.sinse.wms.common.view.content.ExampleContentPage;
+import com.sinse.wms.common.view.content.BaseContentPage;
+import com.sinse.wms.product.model.Stock;
+import com.sinse.wms.product.repository.StockDAO;
 
-public class StatisticPage extends ExampleContentPage{
+public class StatisticPage extends BaseContentPage{
 	//크게 3개 구역으로 지정
 	JPanel p_top;
 	JPanel p_center;
@@ -26,6 +29,10 @@ public class StatisticPage extends ExampleContentPage{
 	JPanel p_inbound;
 	JPanel p_outbound;
 	JPanel p_inventory;
+	
+	BarChart inboundBarChart;
+	BarChart outboundBarChart;
+	BarChart stockBarChart;
 	
 	JPanel p_toplist1;
 	JPanel p_toplist2;
@@ -41,10 +48,16 @@ public class StatisticPage extends ExampleContentPage{
 	JPanel p_category1;
 	JPanel p_category2;
 	
-	public StatisticPage(Color color) {
-		super(color);
+	HorizentalBarChart hBarChart;
+	
+	StockDAO stockDAO;
+	
+	public StatisticPage() {
 		
 		/*생성----------------------------------------------------------------------------*/
+		//DAO
+		stockDAO = new StockDAO();
+		
 		//최상위 레이아웃
 		p_top = new JPanel();
 		p_center = new JPanel();
@@ -55,6 +68,15 @@ public class StatisticPage extends ExampleContentPage{
 		p_inbound = new JPanel();
 		p_outbound = new JPanel();
 		p_inventory = new JPanel();
+		
+		//그래프
+		inboundBarChart = new BarChart("기간별 총 입고 현황", 30, 80, 50);		//입고량
+		outboundBarChart = new BarChart("기간별 총 출고 현황", 100, 130, 200);		//출고량
+		stockBarChart = new BarChart("기간별 총 재고 현황", 200, 1200, 2000);		//재고량
+		
+		List<Stock> invenList = stockDAO.selectTotalStockByLocation();
+		hBarChart = new HorizentalBarChart("재고 창고 포화도", invenList);
+		
 		p_toplist1 = new JPanel();
 		la_titleIn = new JLabel("Top 5");
 		la_resultIn = new JLabel("<html>1. Null <br>2. Null<br>3. Null<br>4. Null<br>5. Null<br></html>");
@@ -123,9 +145,13 @@ public class StatisticPage extends ExampleContentPage{
 		
 		/*조립----------------------------------------------------------------------------*/
 		this.setLayout(new FlowLayout());
+		p_inbound.add(inboundBarChart);
 		tab.add("입고량", p_inbound);
+		p_outbound.add(outboundBarChart);
 		tab.add("출고량", p_outbound);
+		p_inventory.add(stockBarChart);
 		tab.add("재고량", p_inventory);
+		
 		p_top.add(tab);
 		p_toplist1.add(la_titleIn);
 		p_toplist1.add(la_resultIn);
@@ -139,6 +165,7 @@ public class StatisticPage extends ExampleContentPage{
 		add(p_center);
 		
 		p_bottom.add(p_category1);
+		p_category2.add(hBarChart);
 		p_bottom.add(p_category2);
 		add(p_bottom);
 

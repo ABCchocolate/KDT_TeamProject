@@ -96,6 +96,42 @@ public class StockDAO {
 		return list;
 	}
 	
+	//재고 창고별 상품 총 수량 파악
+	public List<Stock> selectTotalStockByLocation(){
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<Stock> list = new ArrayList<>();
+		
+		con = dbManager.getConnetion();
+		
+		try {
+			StringBuffer sql = new StringBuffer();
+			sql.append("select l.location_name, sum(s.stock_quantity)"
+					+ " from stock s inner join location l on s.location_id = l.location_id"
+					+ " group by location_name order by sum(s.stock_quantity) desc limit 5");
+			pstmt = con.prepareStatement(sql.toString());
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Stock stock = new Stock();
+				Location location = new Location();
+				
+				location.setLocation_name(rs.getString("l.location_name"));
+				stock.setLocation(location);
+				
+				stock.setStock_quantity(rs.getInt("sum(s.stock_quantity)"));
+				list.add(stock);
+			}
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			dbManager.release(pstmt, rs);
+		}
+		return list;
+	}
+	
 	// 재고 추가
 	public void insert(Stock stock) {
 		Connection con = null;

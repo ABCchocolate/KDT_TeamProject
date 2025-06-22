@@ -53,10 +53,12 @@ public class Config {
 	
 	
 	//DATABASE CONFIG
-	public static final String URL = "jdbc:mysql://158.247.242.82:3306/sinse_wms";
-	public static final String USER = "sinse3";
-	public static final String PWD = "sinse3!@#";
+//	public static final String URL = "jdbc:mysql://158.247.242.82:3306/sinse_wms";
+//	public static final String USER = "sinse3";
+//	public static final String PWD = "sinse3!@#";
 	
-	
+	public static final String URL = "jdbc:mysql://localhost:3306/wms";
+	public static final String USER = "wms";
+	public static final String PWD = "1234";
 	
 }
