@@ -22,9 +22,11 @@ import com.sinse.wms.inbound.view.InboundInspectionPage;
 import com.sinse.wms.inbound.view.InboundRequestPage;
 import com.sinse.wms.inbound.view.InboundStatusPage;
 import com.sinse.wms.inventory.view.InventoryStatusPage;
+import com.sinse.wms.membermanagement.view.MemberManagementPage;
 import com.sinse.wms.outbound.view.OutboundInspectionPage;
 import com.sinse.wms.outbound.view.OutboundRequestPage;
 import com.sinse.wms.outbound.view.OutboundStatusPage;
+import com.sinse.wms.report.view.ReportPage;
 
 public class Main extends JFrame implements SideMenuClickListener, ToolBarListener {
 	private ToolBar toolbar;
@@ -101,7 +103,8 @@ public class Main extends JFrame implements SideMenuClickListener, ToolBarListen
 		this.bodyContent.add(new InventoryStatusPage(Color.YELLOW), Menu.INVENTORY_STATUS.name());
 //		this.bodyContent.add(new ExampleContentPage(Color.ORANGE), Menu.STATISTICS.name());
 		this.bodyContent.add(new StatisticPage(Color.WHITE), Menu.STATISTICS.name());
-		this.bodyContent.add(new ExampleContentPage(Color.CYAN), Menu.USER_MANAGEMENT.name());
+		this.bodyContent.add(new ReportPage(Color.white),Menu.REPORT.name()); //통계 및 보고서 현황 페이지
+		this.bodyContent.add(new MemberManagementPage(), Menu.USER_MANAGEMENT.name());
 	}
 
 	/**
