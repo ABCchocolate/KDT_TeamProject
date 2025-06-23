@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Paint;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JPanel;
 
@@ -23,22 +25,18 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import com.sinse.wms.common.Config;
 
-public class BarChart extends JPanel{
+public class BarChart2 extends JPanel{
 	String title;	//제목
-	int totalInbound;
-	int totalOutbound;
-	int totalStock;
 	
 	CategoryDataset dataset;
 	JFreeChart chart;
 	ChartPanel chartPanel;
+	List<Map<String, Integer>> list;
 	
 	//생성자
-	public BarChart(String title, int totalInbound, int totalOutbound, int totalStock) {
+	public BarChart2(String title, List<Map<String, Integer>> list) {
 		this.title = title;
-		this.totalInbound = totalInbound;
-		this.totalOutbound = totalOutbound;
-		this.totalStock = totalStock;
+		this.list = list;
 		
 		//생성
 		dataset = createDataset();
@@ -60,16 +58,14 @@ public class BarChart extends JPanel{
 		//row key
 		final String series = "총 합계";
 		
-		//column key
-		final String category1 = "일별";
-		final String category2 = "주별";
-		final String category3 = "월별";
-		
 		//데이터 셋 생성
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		dataset.addValue(totalInbound, series, category1);
-		dataset.addValue(totalOutbound, series, category2);
-		dataset.addValue(totalStock, series, category3);
+		
+		for(Map<String, Integer> map : list) {
+			for (Map.Entry<String, Integer> entry : map.entrySet()) {
+				dataset.addValue(entry.getValue(), series, entry.getKey());
+			}
+		}
 		
 		return dataset;
 	}
@@ -102,7 +98,14 @@ public class BarChart extends JPanel{
 			private final Paint[] paints = new Paint[] {
 					new GradientPaint(0f, 0f, Color.BLUE, 0f, 0f, Color.CYAN),
 			        new GradientPaint(0f, 0f, Color.GREEN, 0f, 0f, Color.LIGHT_GRAY),
-			        new GradientPaint(0f, 0f, Color.ORANGE, 0f, 0f, Color.YELLOW)
+			        new GradientPaint(0f, 0f, Color.ORANGE, 0f, 0f, Color.YELLOW),
+			        new GradientPaint(0f, 0f, Color.RED, 0f, 0f, Color.PINK),
+			        new GradientPaint(0f, 0f, new Color(75, 0, 130), 0f, 0f, new Color(138, 43, 226)),
+			        new GradientPaint(0f, 0f, new Color(255, 105, 180), 0f, 0f, new Color(255, 182, 193)),
+			        new GradientPaint(0f, 0f, new Color(0, 255, 127), 0f, 0f, new Color(173, 255, 47)),
+			        new GradientPaint(0f, 0f, new Color(0, 191, 255), 0f, 0f, new Color(135, 206, 250)), 
+			        new GradientPaint(0f, 0f, new Color(210, 105, 30), 0f, 0f, new Color(255, 160, 122)),
+			        new GradientPaint(0f, 0f, new Color(106, 90, 205), 0f, 0f, new Color(123, 104, 238)) 
 			};
 			@Override
 			public Paint getItemPaint(int row, int column) {

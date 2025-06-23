@@ -41,7 +41,7 @@ public class HorizentalBarChart extends JPanel{
 		//스타일
 		chart.getTitle().setFont(new Font(Config.APP_DEFAULT_FONT, Font.BOLD, 15));
 		chart.getLegend().setItemFont(new Font(Config.APP_DEFAULT_FONT, Font.PLAIN, 10));
-		chartPanel.setPreferredSize(new Dimension(380, 200));
+		chartPanel.setPreferredSize(new Dimension(380, 320));
 		
 		//데이터 입력
 		for(int i=0; i<list.size(); i++) {
