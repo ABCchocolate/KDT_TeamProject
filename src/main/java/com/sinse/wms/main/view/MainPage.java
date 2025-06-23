@@ -20,6 +20,7 @@ import com.sinse.wms.common.util.ToDoCard;
 import com.sinse.wms.common.util.WeatherFetcher;
 import com.sinse.wms.common.view.content.BaseContentPage;
 import com.sinse.wms.main.model.WeatherData;
+import com.sinse.wms.product.repository.StockDAO;
 
 public class MainPage extends BaseContentPage {
 
@@ -132,8 +133,13 @@ public class MainPage extends BaseContentPage {
         JPanel panel = createCardPanel();
         panel.setLayout(new GridLayout(3, 2));
 
+        StockDAO dao = new StockDAO();
+        int outboundQty = dao.getExpectedOutboundQuantity();
+        int inboundQty = dao.getExpectedInboundQuantity();
+        int profit = dao.getTodayProfit();
+
         String[] labels = {"출고 예정", "입고 예정", "금일 총 이익"};
-        String[] values = {"+3029", "+4152", "+203 $"};
+        String[] values = {"+" + outboundQty, "+" + inboundQty, "+" + profit + " $"};
         String[] icons = {"📦", "🏠", "💰"};
 
         for (int i = 0; i < labels.length; i++) {
@@ -147,6 +153,7 @@ public class MainPage extends BaseContentPage {
 
         return panel;
     }
+
 
     private JPanel createCardPanel() {
         JPanel panel = new JPanel();
