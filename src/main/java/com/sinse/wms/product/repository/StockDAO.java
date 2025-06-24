@@ -22,8 +22,9 @@ public class StockDAO {
 	
 	
 	public int getExpectedOutboundQuantity() {
-        String sql = "SELECT IFNULL(SUM(quantity), 0) FROM Inout_Request WHERE request_type = '출고' AND expected_date = CURDATE()";
-        try (Connection conn = dbManager.getConnetion();
+        String sql = "SELECT IFNULL(SUM(quantity), 0) FROM io_request WHERE io_request_type = '출고' AND expected_date = CURDATE()";
+        Connection conn = dbManager.getConnetion();
+        try (
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
             if (rs.next()) return rs.getInt(1);
@@ -32,8 +33,9 @@ public class StockDAO {
     }
 
     public int getExpectedInboundQuantity() {
-        String sql = "SELECT IFNULL(SUM(quantity), 0) FROM Inout_Request WHERE request_type = '입고' AND expected_date = CURDATE()";
-        try (Connection conn = dbManager.getConnetion();
+        String sql = "SELECT IFNULL(SUM(quantity), 0) FROM io_request WHERE io_request_type = '입고' AND expected_date = CURDATE()";
+        Connection conn = dbManager.getConnetion();
+        try (
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
             if (rs.next()) return rs.getInt(1);
@@ -42,8 +44,9 @@ public class StockDAO {
     }
 
     public int getTodayProfit() {
-        String sql = "SELECT IFNULL(SUM(r.quantity * p.price), 0) FROM Inout_Request r  JOIN Product p ON r.product_id = p.product_id WHERE r.request_type = '출고' AND r.expected_date = CURDATE()";
-        try (Connection conn = dbManager.getConnetion();
+        String sql = "SELECT IFNULL(SUM(r.quantity * p.product_price), 0) FROM io_request r  JOIN product p ON r.product_id = p.product_id WHERE r.io_request_type = '출고' AND r.expected_date = CURDATE()";
+        Connection conn = dbManager.getConnetion();
+        try (
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
             if (rs.next()) return rs.getInt(1);
@@ -55,8 +58,8 @@ public class StockDAO {
 	    List<StockRecord> list = new ArrayList<>();
 	    String sql = "SELECT r.io_request_type, r.request_at, r.quantity, p.product_name, l.location_name FROM io_request r JOIN product p ON r.product_id = p.product_id JOIN location l ON r.location_id = l.location_id WHERE r.io_request_type = ? AND r.request_at BETWEEN ? AND ?";
 
+	    Connection con = dbManager.getConnetion();
 	    try (
-	        Connection con = dbManager.getConnetion();
 	        PreparedStatement pstmt = con.prepareStatement(sql);
 	    ) {
 	        pstmt.setString(1, type); // 예: "입고", "출고", "변경"
