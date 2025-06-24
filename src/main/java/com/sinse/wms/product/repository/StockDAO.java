@@ -87,7 +87,7 @@ public class StockDAO {
 	}
 
 	//상품별 총합계 테이블 조회
-	public List<Stock> selectProductQuantity(){
+	public List<Stock> selectProductQuantity(Product p){
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -100,12 +100,32 @@ public class StockDAO {
 			sql.append("SELECT p.product_id, p.product_name, p.product_code, p.product_stock, SUM(s.stock_quantity) as total"
 					+ " FROM product p LEFT JOIN stock s ON p.product_id=s.product_id"
 					+ " LEFT JOIN company c ON p.company_id = c.company_id"
-					+ " LEFT JOIN io_request i ON p.product_id = i.product_id"
-					+ " LEFT JOIN request_status st ON i.status_id = st.status_id");
+					+ " LEFT JOIN io_request i ON p.product_id = i.product_id");
 			sql.append(" WHERE 1=1");	//조건 조합을 위한 기본 true 조건
+			
+			List<Object> paramList = new ArrayList<>();
+			
+			if(p.getCompany() != null && p.getCompany().getCompany_name() != null && !p.getCompany().getCompany_name().isEmpty()) {
+				sql.append(" AND c.company_name = ?");
+				paramList.add(p.getCompany().getCompany_name());
+			}
+			if(p.getProduct_code() != null && !p.getProduct_code().isEmpty()) {
+				sql.append(" AND p.product_code = ?");
+				paramList.add(p.getProduct_code());
+			}
+			if (p.getProduct_name() != null && !p.getProduct_name().isEmpty()) {
+			    sql.append(" AND p.product_name = ?");
+			    paramList.add(p.getProduct_name());
+			}
 			
 			sql.append(" GROUP BY p.product_id, p.product_name, p.product_code, p.product_stock");
 			pstmt = con.prepareStatement(sql.toString());
+			
+			//바인딩
+			for(int i=0; i<paramList.size(); i++) {
+				pstmt.setObject(i+1, paramList.get(i));
+			}
+			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				Stock stock = new Stock();
@@ -161,7 +181,6 @@ public class StockDAO {
 		}finally {
 			dbManager.release(pstmt, rs);
 		}
-
 		return list;
 	}
 	

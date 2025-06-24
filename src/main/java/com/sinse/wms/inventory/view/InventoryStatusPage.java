@@ -22,7 +22,6 @@ import com.sinse.wms.common.view.content.LabeledComboBox;
 import com.sinse.wms.inventory.model.InventoryTableModel;
 import com.sinse.wms.product.model.Company;
 import com.sinse.wms.product.model.Product;
-import com.sinse.wms.product.model.RequestStatus;
 import com.sinse.wms.product.repository.CompanyDAO;
 import com.sinse.wms.product.repository.ProductDAO;
 import com.sinse.wms.product.repository.RequestStatusDAO;
@@ -43,6 +42,12 @@ public class InventoryStatusPage extends BaseContentPage {
     RequestStatusDAO requestStatusDAO;
     ProductDAO productDAO;
     
+    Product product = new Product();
+    
+    final int COMPANY = 0;
+    final int PRODUCTCODE = 1;
+    final int PRODUCTNAME = 2;
+    
     //테이블에 들어갈 컬럼명 정의
     List<String> columns = new ArrayList(Arrays.asList("No", "상품명", "품목코드", "현재 재고량", "적정재고량", "주문 필요여부"));
 
@@ -54,7 +59,7 @@ public class InventoryStatusPage extends BaseContentPage {
     	 * 		생성
     	 *--------------------------------------------------------------------------- */
         p_wrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 7));
-        tableModel = new InventoryTableModel(columns);
+        tableModel = new InventoryTableModel(columns, product);
         table = new JTable(tableModel);
         scroll = new JScrollPane(table);
         p_bottom = new JPanel();
@@ -73,11 +78,11 @@ public class InventoryStatusPage extends BaseContentPage {
         p_wrapper.setOpaque(false);
 
         // 라벨 및 JComboBox 사이즈 지정
-        Dimension labelSize = new Dimension(55, 30);
-        Dimension comboSize = new Dimension(135, 30);
+        Dimension labelSize = new Dimension(60, 30);
+        Dimension comboSize = new Dimension(200, 30);
         
         //테이블, 버튼 레이아웃 사이즈 지정
-        scroll.setPreferredSize(new Dimension(Config.CONTENT_BODY_WIDTH - Config.CONTENT_BODY_BORDER_WIDTH * 2-20, 500));
+        scroll.setPreferredSize(new Dimension(Config.CONTENT_BODY_WIDTH - Config.CONTENT_BODY_BORDER_WIDTH * 2-20, 650));
         scroll.setBackground(Color.gray);
         p_bottom.setPreferredSize(new Dimension(Config.CONTENT_BODY_WIDTH - Config.CONTENT_BODY_BORDER_WIDTH * 2-20, 50));
         p_bottom.setBackground(new Color(0, 0, 0, 0));	//배경 투명
@@ -90,13 +95,6 @@ public class InventoryStatusPage extends BaseContentPage {
         for(int i=0; i<companyList.size(); i++) {
         	companyArray[i+1] = companyList.get(i).getCompany_name();
         }
-        
-        List<RequestStatus> reqStatusList = requestStatusDAO.selectAll();
-        String[] reqStatusArray = new String[reqStatusList.size()+1];
-        for(int i=0; i<reqStatusList.size(); i++) {
-        	reqStatusArray[i+1] = reqStatusList.get(i).getStatus_name();
-        }
-        
         List<String> productNameList = productDAO.selectProductNames();
         String[] productNameArray = new String[productNameList.size()+1];
         for(int i=0; i<productNameList.size(); i++) {
@@ -108,19 +106,28 @@ public class InventoryStatusPage extends BaseContentPage {
         	productCodeArray[i+1] = productCodeList.get(i);
         }
 
-        
-        
         // 라벨 및 JComboBox 묶음 지정
-        filters = new LabeledComboBox[] { // new String[]{} 대신 데이터 배열 넣어주시면 될 것 같습니다.
+        filters = new LabeledComboBox[] {
             new LabeledComboBox("거래처", companyArray, labelSize, comboSize),
             new LabeledComboBox("품목코드", productCodeArray, labelSize, comboSize),
-            new LabeledComboBox("품목명", productNameArray, labelSize, comboSize),
-            new LabeledComboBox("진행상태", reqStatusArray, labelSize, comboSize),
+            new LabeledComboBox("품목명", productNameArray, labelSize, comboSize)
         };
 
         //조회 버튼 이벤트
   		bt_search.addActionListener(e->{
+  			Company company = new Company();
   			
+  			if (!"".equals(filters[COMPANY].getSelectedItem())) {
+  			    company.setCompany_name(filters[COMPANY].getSelectedItem());
+  			    product.setCompany(company);
+  			}
+  			if(!"".equals(filters[PRODUCTCODE].getSelectedItem())) {
+  				product.setProduct_code(filters[PRODUCTCODE].getSelectedItem());
+  			}
+  			if(!"".equals(filters[PRODUCTNAME].getSelectedItem())) {
+  				product.setProduct_name(filters[PRODUCTNAME].getSelectedItem());
+  			}
+  			tableModel.setProduct(product);
   		});
   		
   		//엑셀 버튼 이벤트
@@ -137,7 +144,6 @@ public class InventoryStatusPage extends BaseContentPage {
   			JOptionPane.showMessageDialog(this, msg);		//결과 메시지 띄우기
   			
   		});
-  		
         
   		/*---------------------------------------------------------------------------
     	 * 		부착
