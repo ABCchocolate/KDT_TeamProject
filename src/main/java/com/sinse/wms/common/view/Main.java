@@ -56,6 +56,8 @@ public class Main extends JFrame implements SideMenuClickListener, ToolBarListen
 		add(toolbar, BorderLayout.WEST);
 		add(centerWrapper, BorderLayout.CENTER);
 
+		toolbar.setToolBarListener(this);
+		
 		setVisible(true);
 		pack();
 	}
@@ -106,10 +108,6 @@ public class Main extends JFrame implements SideMenuClickListener, ToolBarListen
 		this.bodyContent.add(new StatisticPage(), Menu.STATISTICS.name());
 		this.bodyContent.add(new ReportPage(Color.white), Menu.REPORT.name()); // 통계 및 보고서 현황 페이지
 		this.bodyContent.add(new MemberManagementPage(), Menu.USER_MANAGEMENT.name());
-		
-
-		
-		
 		this.bodyContent.add(new Mypage(Color.white), Menu.MY_PAGE.name());
 
 	}
@@ -157,8 +155,8 @@ public class Main extends JFrame implements SideMenuClickListener, ToolBarListen
 
 	@Override
 	public void onClickMyPage() {
-		System.out.println("Main에서 마이페이지 클릭 이벤트 수신"); //  확인용
-		handleContent(Menu.MY_PAGE);
+		System.out.println("마이페이지클릭"); //클릭 이벤트 수신
+		this.cardLayout.show(this.bodyContent, Menu.MY_PAGE.name());
 	}
 
 	@Override
