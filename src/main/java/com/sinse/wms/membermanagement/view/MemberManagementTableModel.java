@@ -33,6 +33,8 @@ public class MemberManagementTableModel extends AbstractTableModel {
 			return "관리자";
 		case 3:
 			return "부서";
+		case 4: 
+			return "직급";
 		default:
 			return "휴면상태";
 		}
@@ -40,7 +42,7 @@ public class MemberManagementTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 5;
+		return 6;
 	}
 
 	@Override
@@ -59,6 +61,8 @@ public class MemberManagementTableModel extends AbstractTableModel {
 			}
 		case 3:
 			return member.getDept().getDept_name();
+		case 4:
+			return member.getAuth().getAuth_name();
 		default:
 			if (member.isDormant()) {
 				return "O";

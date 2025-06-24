@@ -279,7 +279,8 @@ public class MemberManagementPage extends BaseContentPage implements MemberInfoD
 		this.tb_member.getColumnModel().getColumn(1).setCellRenderer(rightRender);
 		this.tb_member.getColumnModel().getColumn(2).setCellRenderer(centerRender);
 		this.tb_member.getColumnModel().getColumn(3).setCellRenderer(rightRender);
-		this.tb_member.getColumnModel().getColumn(4).setCellRenderer(centerRender);
+		this.tb_member.getColumnModel().getColumn(4).setCellRenderer(rightRender);
+		this.tb_member.getColumnModel().getColumn(5).setCellRenderer(centerRender);
 		this.tb_member.updateUI();
 	}
 

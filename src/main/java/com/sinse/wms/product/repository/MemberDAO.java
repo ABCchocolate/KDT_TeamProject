@@ -71,7 +71,7 @@ public class MemberDAO {
 		con = dbManager.getConnetion();
 
 		try {
-			String sql = "SELECT m.member_id, m.member_password, m.member_email, m.member_name, m.member_hiredate, m.dormant, d.dept_id, d.dept_name, a.auth_id, a.auth_name, a.auth_flag FROM member m INNER JOIN dept d ON m.dept_id=d.dept_id INNER JOIN auth a ON m.auth_id=a.auth_id";
+			String sql = "SELECT m.member_id, m.member_password, m.member_email, m.member_name, m.member_hiredate, m.dormant, d.dept_id, d.dept_name, a.auth_id, a.auth_name, a.auth_flag, j.job_grade_id, j.job_grade_name FROM member m INNER JOIN dept d ON m.dept_id=d.dept_id INNER JOIN auth a ON m.auth_id=a.auth_id INNER JOIN job_grade j ON m.job_grade_id=j.job_grade_id";
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
