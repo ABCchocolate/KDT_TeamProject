@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.sinse.wms.common.Config;
 import com.sinse.wms.common.util.DBManager;
 import com.sinse.wms.product.model.IoRequest;
 import com.sinse.wms.product.model.Location;
@@ -17,6 +18,7 @@ import com.sinse.wms.product.model.Product;
 import com.sinse.wms.product.model.RequestStatus;
 
 public class IoRequestDAO {
+
 	DBManager dbManager = DBManager.getInstance();
 
 	// 전체 입출고 요청 조회
@@ -80,6 +82,7 @@ public class IoRequestDAO {
 		con = dbManager.getConnetion();
 
 		try {
+
 			StringBuffer sql = new StringBuffer();
 			sql.append("select ifnull(sum(quantity), 0) as total" + " from io_request where io_request_type=?"
 					+ " and date(expected_date)=current_date");
@@ -228,17 +231,91 @@ public class IoRequestDAO {
 		} finally {
 			dbManager.release(pstmt, rs);
 		}
-		return list;
-	}
 
-	// 입출고 요청 등록
-	public void insert(IoRequest io) {
-		Connection con = dbManager.getConnetion();
-		PreparedStatement pstmt = null;
+    	return list;
+    }
 
-		try {
-			String sql = "INSERT INTO io_request (iorequest_type, product_id, quantity, location_id, request_member_id, request_reason, status_id, request_at, expected_date, approve_member_id, approve_at, remark) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    // 입출고 요청 등록
+    public void insert(IoRequest io) {
+        Connection con = dbManager.getConnetion();
+        PreparedStatement pstmt = null;
+
+        try {
+            String sql = "INSERT INTO io_request (iorequest_type, product_id, quantity, location_id, request_member_id, request_reason, status_id, request_at, expected_date, approve_member_id, approve_at, remark) "
+                       + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, io.getIoRequest_type());
+            pstmt.setInt(2, io.getProduct().getProduct_id());
+            pstmt.setInt(3, io.getQuantity());
+            pstmt.setInt(4, io.getLocation().getLocation_id());
+            pstmt.setInt(5, io.getRequest_member_id().getMember_id()); // Member 객체에서 id 추출
+            pstmt.setString(6, io.getRequest_reason());
+            pstmt.setInt(7, io.getStatus().getStatus_id());
+            pstmt.setDate(8, io.getRequest_at());
+            pstmt.setDate(9, io.getExpected_date());
+            pstmt.setInt(10, io.getMember().getMember_id());
+            pstmt.setDate(11, io.getApproved_at());
+            pstmt.setString(12, io.getRemark());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbManager.release(pstmt);
+        }
+    }
+
+    // 입출고 요청 수정
+    public void update(IoRequest io) {
+        Connection con = dbManager.getConnetion();
+        PreparedStatement pstmt = null;
+
+        try {
+            String sql = "UPDATE io_request SET iorequest_type=?, product_id=?, quantity=?, location_id=?, request_member_id=?, request_reason=?, status_id=?, request_at=?, expected_date=?, approve_member_id=?, approve_at=?, remark=? "
+                       + "WHERE iorequest_id=?";
+
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, io.getIoRequest_type());
+            pstmt.setInt(2, io.getProduct().getProduct_id());
+            pstmt.setInt(3, io.getQuantity());
+            pstmt.setInt(4, io.getLocation().getLocation_id());
+            pstmt.setInt(5, io.getRequest_member_id().getMember_id());
+            pstmt.setString(6, io.getRequest_reason());
+            pstmt.setInt(7, io.getStatus().getStatus_id());
+            pstmt.setDate(8, io.getRequest_at());
+            pstmt.setDate(9, io.getExpected_date());
+            pstmt.setInt(10, io.getMember().getMember_id());
+            pstmt.setDate(11, io.getApproved_at());
+            pstmt.setString(12, io.getRemark());
+            pstmt.setInt(13, io.getIoRequest_id());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbManager.release(pstmt);
+        }
+    }
+
+    // 입출고 요청 삭제
+    public void delete(int iorequestId) {
+        Connection con = dbManager.getConnetion();
+        PreparedStatement pstmt = null;
+
+        try {
+            String sql = "DELETE FROM io_request WHERE iorequest_id = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, iorequestId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbManager.release(pstmt);
+        }
+    }
+}
+
 
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, io.getIoRequest_type());
