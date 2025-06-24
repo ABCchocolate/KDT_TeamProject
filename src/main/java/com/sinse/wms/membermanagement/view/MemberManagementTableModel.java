@@ -8,16 +8,20 @@ import com.sinse.wms.product.model.Member;
 
 public class MemberManagementTableModel extends AbstractTableModel {
 	private List<Member> members;
-	
+
 	public MemberManagementTableModel(List<Member> members) {
 		this.members = members;
 	}
 	
+	public Member getMemberAt(int row) {
+		return members.get(row);
+	}
+
 	@Override
 	public int getRowCount() {
 		return this.members.size();
 	}
-	
+
 	@Override
 	public String getColumnName(int column) {
 		switch (column) {
@@ -48,11 +52,19 @@ public class MemberManagementTableModel extends AbstractTableModel {
 		case 1:
 			return member.getMember_email();
 		case 2:
-			return member.getAuth().getAuth_name();
+			if (member.getAuth().getAuth_id() <= 3) {
+				return "O";
+			} else {
+				return "X";
+			}
 		case 3:
 			return member.getDept().getDept_name();
 		default:
-			return null;
+			if (member.isDormant()) {
+				return "O";
+			} else {
+				return "X";
+			}
 		}
 	}
 
