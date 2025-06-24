@@ -8,7 +8,6 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -27,6 +26,7 @@ import javax.swing.SwingConstants;
 
 import com.sinse.wms.common.Config;
 import com.sinse.wms.common.exception.MemberUpdateException;
+import com.sinse.wms.common.util.EmailValidator;
 import com.sinse.wms.common.view.button.FillButton;
 import com.sinse.wms.product.model.Auth;
 import com.sinse.wms.product.model.Dept;
@@ -285,8 +285,8 @@ public class MemberInfoDialog extends JDialog {
 			invaild.add("이름");
 		}
 
-		if (this.tf_email.getText().trim().length() == 0) {
-			invaild.add("이메일");
+		if (!EmailValidator.isValidEmailRegex(this.tf_email.getText())) {
+			invaild.add("이메일형식");
 		}
 
 		if (this.type == MemberDialogType.ADD && String.valueOf(this.tf_pwd.getPassword()).trim().length() == 0) {
