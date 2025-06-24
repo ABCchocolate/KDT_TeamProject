@@ -10,6 +10,7 @@ public class InventoryTableModel extends TableModel{
 	StockDAO stockDAO;
 	List<Stock> list;
 	List<String> column;
+	int count = 1;
 	
 	//생성자
 	public InventoryTableModel(List<String> column) {
@@ -41,7 +42,6 @@ public class InventoryTableModel extends TableModel{
 	public Object getValueAt(int row, int col) {
 		Stock stock = list.get(row);
 		String value = null;
-		int count = 1;
 		
 		switch(col){
 			case 0: value =Integer.toString(count); count++; break;

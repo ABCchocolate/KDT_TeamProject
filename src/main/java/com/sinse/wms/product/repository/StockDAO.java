@@ -99,7 +99,12 @@ public class StockDAO {
 			StringBuffer sql = new StringBuffer();
 			sql.append("SELECT p.product_id, p.product_name, p.product_code, p.product_stock, SUM(s.stock_quantity) as total"
 					+ " FROM product p LEFT JOIN stock s ON p.product_id=s.product_id"
-					+ " GROUP BY p.product_id, p.product_name, p.product_stock");
+					+ " LEFT JOIN company c ON p.company_id = c.company_id"
+					+ " LEFT JOIN io_request i ON p.product_id = i.product_id"
+					+ " LEFT JOIN request_status st ON i.status_id = st.status_id");
+			sql.append(" WHERE 1=1");	//조건 조합을 위한 기본 true 조건
+			
+			sql.append(" GROUP BY p.product_id, p.product_name, p.product_code, p.product_stock");
 			pstmt = con.prepareStatement(sql.toString());
 			rs = pstmt.executeQuery();
 			while(rs.next()) {

@@ -66,7 +66,7 @@ public class IoRequestDAO {
             e.printStackTrace();
         } finally {
             dbManager.release(pstmt, rs);
-            dbManager.release(con); // 연결도 해제
+//            dbManager.release(con); // 연결도 해제
         }
         return list;
     }
@@ -268,7 +268,7 @@ public class IoRequestDAO {
             e.printStackTrace();
         } finally {
             dbManager.release(pstmt);
-            dbManager.release(con);
+//            dbManager.release(con);
         }
     }
 
@@ -301,7 +301,7 @@ public class IoRequestDAO {
             e.printStackTrace();
         } finally {
             dbManager.release(pstmt);
-            dbManager.release(con);
+//            dbManager.release(con);
         }
     }
 
@@ -319,7 +319,7 @@ public class IoRequestDAO {
             e.printStackTrace();
         } finally {
             dbManager.release(pstmt);
-            dbManager.release(con);
+//            dbManager.release(con);
         }
     }
 }
