@@ -14,13 +14,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import com.sinse.wms.common.Config;
-import com.sinse.wms.common.exception.InvalidFormException;
 import com.sinse.wms.common.view.button.OutLineButton;
 import com.sinse.wms.common.view.content.BaseContentPage;
 import com.sinse.wms.common.view.content.FilterPanelResult;
 import com.sinse.wms.common.view.content.LabeledComboBox;
 import com.sinse.wms.common.view.content.TablePanel;
-import com.sinse.wms.inbound.repository.InboundDAO;
 import com.sinse.wms.product.model.IoRequest;
 import com.sinse.wms.product.repository.IoRequestDAO;
 

@@ -10,8 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.sinse.wms.common.Config;
 import com.sinse.wms.common.util.DBManager;
+import com.sinse.wms.product.model.Company;
+import com.sinse.wms.product.model.Dept;
 import com.sinse.wms.product.model.IoRequest;
 import com.sinse.wms.product.model.Location;
 import com.sinse.wms.product.model.Member;
