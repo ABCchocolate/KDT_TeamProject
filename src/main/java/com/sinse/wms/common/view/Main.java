@@ -65,6 +65,7 @@ public class Main extends JFrame implements SideMenuClickListener, ToolBarListen
 	 */
 	private void initToolbar() {
 		this.toolbar = new ToolBar();
+		this.toolbar.setToolBarListener(this);
 	}
 
 	/**
@@ -107,10 +108,9 @@ public class Main extends JFrame implements SideMenuClickListener, ToolBarListen
 		this.bodyContent.add(new MemberManagementPage(), Menu.USER_MANAGEMENT.name());
 		
 
-		//=====
-		Mypage myPage = new Mypage(Color.WHITE);
-		myPage.setName(Menu.MY_PAGE.name());
-		this.bodyContent.add(myPage, Menu.MY_PAGE.name());
+		
+		
+		this.bodyContent.add(new Mypage(Color.white), Menu.MY_PAGE.name());
 
 	}
 
@@ -157,10 +157,8 @@ public class Main extends JFrame implements SideMenuClickListener, ToolBarListen
 
 	@Override
 	public void onClickMyPage() {
-		// TODO("툴바 사람 아이콘 클릭시 구현");
-		// 마이페이지를 구현하기 위함.. 나중에 MyPage.jav로 구현완료 해야함
-		 handleContent(Menu.MY_PAGE);
-		
+		System.out.println("Main에서 마이페이지 클릭 이벤트 수신"); //  확인용
+		handleContent(Menu.MY_PAGE);
 	}
 
 	@Override

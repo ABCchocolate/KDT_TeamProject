@@ -18,6 +18,7 @@ import com.sinse.wms.product.model.Stock;
 public class StockDAO {
 	DBManager dbManager = DBManager.getInstance();
 
+
 	// 금일 출고 예정 수량
 	public int getExpectedOutboundQuantity() {
 		String sql = "SELECT IFNULL(SUM(quantity), 0) " + "FROM io_request "
