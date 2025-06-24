@@ -21,8 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.sinse.wms.common.Config;
@@ -31,9 +29,11 @@ import com.sinse.wms.common.view.button.OutLineButton;
 import com.sinse.wms.common.view.content.BaseContentPage;
 import com.sinse.wms.product.model.Auth;
 import com.sinse.wms.product.model.Dept;
+import com.sinse.wms.product.model.JobGrade;
 import com.sinse.wms.product.model.Member;
 import com.sinse.wms.product.repository.AuthDAO;
 import com.sinse.wms.product.repository.DeptDAO;
+import com.sinse.wms.product.repository.JobGradeDAO;
 import com.sinse.wms.product.repository.MemberDAO;
 
 public class MemberManagementPage extends BaseContentPage implements MemberInfoDialog.MemberInfoDialogListener {
@@ -63,6 +63,7 @@ public class MemberManagementPage extends BaseContentPage implements MemberInfoD
 	private MemberDAO memberDAO = new MemberDAO();
 	private DeptDAO deptDAO = new DeptDAO();
 	private AuthDAO authDAO = new AuthDAO();
+	private JobGradeDAO jobGradeDAO = new JobGradeDAO();
 
 	private List<Member> members = new ArrayList<>();
 	private Member selectedMember = null;
@@ -107,6 +108,7 @@ public class MemberManagementPage extends BaseContentPage implements MemberInfoD
 			member_info_dialog.setType(MemberDialogType.ADD);
 			getDepts();
 			getAuth();
+			getJobGrade();
 			member_info_dialog.setMember(null);
 			member_info_dialog.setVisible(true);
 		});
@@ -115,6 +117,7 @@ public class MemberManagementPage extends BaseContentPage implements MemberInfoD
 			member_info_dialog.setType(MemberDialogType.MODIFY);
 			getDepts();
 			getAuth();
+			getJobGrade();
 			member_info_dialog.setMember(selectedMember);
 			member_info_dialog.setVisible(true);
 		});
@@ -255,6 +258,11 @@ public class MemberManagementPage extends BaseContentPage implements MemberInfoD
 	private void getAuth() {
 		List<Auth> auths = this.authDAO.selectAll();
 		this.member_info_dialog.setAuth(auths);
+	}
+
+	private void getJobGrade() {
+		List<JobGrade> jobGrades = this.jobGradeDAO.selectAll();
+		this.member_info_dialog.setJobGrades(jobGrades);
 	}
 
 	private void getUsers() {
