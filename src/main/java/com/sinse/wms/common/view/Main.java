@@ -22,6 +22,7 @@ import com.sinse.wms.inbound.view.InboundStatusPage;
 import com.sinse.wms.inventory.view.InventoryStatusPage;
 import com.sinse.wms.main.view.MainPage;
 import com.sinse.wms.membermanagement.view.MemberManagementPage;
+import com.sinse.wms.mypage.view.Mypage;
 import com.sinse.wms.outbound.view.OutboundInspectionPage;
 import com.sinse.wms.outbound.view.OutboundRequestPage;
 import com.sinse.wms.outbound.view.OutboundStatusPage;
@@ -104,6 +105,13 @@ public class Main extends JFrame implements SideMenuClickListener, ToolBarListen
 		this.bodyContent.add(new StatisticPage(), Menu.STATISTICS.name());
 		this.bodyContent.add(new ReportPage(Color.white), Menu.REPORT.name()); // 통계 및 보고서 현황 페이지
 		this.bodyContent.add(new MemberManagementPage(), Menu.USER_MANAGEMENT.name());
+		
+
+		//=====
+		Mypage myPage = new Mypage(Color.WHITE);
+		myPage.setName(Menu.MY_PAGE.name());
+		this.bodyContent.add(myPage, Menu.MY_PAGE.name());
+
 	}
 
 	/**
@@ -150,6 +158,9 @@ public class Main extends JFrame implements SideMenuClickListener, ToolBarListen
 	@Override
 	public void onClickMyPage() {
 		// TODO("툴바 사람 아이콘 클릭시 구현");
+		// 마이페이지를 구현하기 위함.. 나중에 MyPage.jav로 구현완료 해야함
+		 handleContent(Menu.MY_PAGE);
+		
 	}
 
 	@Override

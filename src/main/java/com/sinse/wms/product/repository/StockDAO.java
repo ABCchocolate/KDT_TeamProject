@@ -15,71 +15,84 @@ import com.sinse.wms.product.model.Location;
 import com.sinse.wms.product.model.Product;
 import com.sinse.wms.product.model.Stock;
 
-
-
 public class StockDAO {
 	DBManager dbManager = DBManager.getInstance();
-	
-	
+
+	// 금일 출고 예정 수량
 	public int getExpectedOutboundQuantity() {
-        String sql = "SELECT IFNULL(SUM(quantity), 0) FROM Inout_Request WHERE request_type = '출고' AND expected_date = CURDATE()";
-        try (Connection conn = dbManager.getConnetion();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            if (rs.next()) return rs.getInt(1);
-        } catch (Exception e) { e.printStackTrace(); }
-        return 0;
-    }
-
-    public int getExpectedInboundQuantity() {
-        String sql = "SELECT IFNULL(SUM(quantity), 0) FROM Inout_Request WHERE request_type = '입고' AND expected_date = CURDATE()";
-        try (Connection conn = dbManager.getConnetion();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            if (rs.next()) return rs.getInt(1);
-        } catch (Exception e) { e.printStackTrace(); }
-        return 0;
-    }
-
-    public int getTodayProfit() {
-        String sql = "SELECT IFNULL(SUM(r.quantity * p.price), 0) FROM Inout_Request r  JOIN Product p ON r.product_id = p.product_id WHERE r.request_type = '출고' AND r.expected_date = CURDATE()";
-        try (Connection conn = dbManager.getConnetion();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            if (rs.next()) return rs.getInt(1);
-        } catch (Exception e) { e.printStackTrace(); }
-        return 0;
-    }
-	
-	public List<StockRecord> selectRequestByTypeAndDate(String type, String startDate, String endDate) {
-	    List<StockRecord> list = new ArrayList<>();
-	    String sql = "SELECT r.io_request_type, r.request_at, r.quantity, p.product_name, l.location_name FROM io_request r JOIN product p ON r.product_id = p.product_id JOIN location l ON r.location_id = l.location_id WHERE r.io_request_type = ? AND r.request_at BETWEEN ? AND ?";
-
-	    try (
-	        Connection con = dbManager.getConnetion();
-	        PreparedStatement pstmt = con.prepareStatement(sql);
-	    ) {
-	        pstmt.setString(1, type); // 예: "입고", "출고", "변경"
-	        pstmt.setString(2, startDate);
-	        pstmt.setString(3, endDate);
-	        ResultSet rs = pstmt.executeQuery();
-	        while (rs.next()) {
-	            StockRecord record = new StockRecord();
-	            record.setProductName(rs.getString("product_name"));
-	            record.setAmount(rs.getInt("quantity"));
-	            record.setDate(rs.getString("request_at"));
-	            record.setCheckResult(rs.getString("io_request_type")); // 간단히 구분 저장
-	            // 필요 시 location 등 추가
-	            list.add(record);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return list;
+		String sql = "SELECT IFNULL(SUM(quantity), 0) " + "FROM io_request "
+				+ "WHERE io_request_type = 1 AND status_id IN (SELECT status_id FROM request_status WHERE status_name = '승인') "
+				+ "AND expected_date = CURDATE()";
+		try (Connection conn = dbManager.getConnetion();
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery()) {
+			if (rs.next())
+				return rs.getInt(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
+	// 금일 입고 예정 수량
+	public int getExpectedInboundQuantity() {
+		String sql = "SELECT IFNULL(SUM(quantity), 0) FROM io_request "
+				+ "WHERE io_request_type = 0 AND status_id IN (SELECT status_id FROM request_status WHERE status_name = '승인') "
+				+ "AND expected_date = CURDATE()";
+		try (Connection conn = dbManager.getConnetion();
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery()) {
+			if (rs.next())
+				return rs.getInt(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 
-	
+	// 금일 출고에 따른 총 이익
+	public int getTodayProfit() {
+		String sql = "SELECT IFNULL(SUM(r.quantity * p.product_price), 0) FROM io_request r "
+				+ "JOIN product p ON r.product_id = p.product_id "
+				+ "WHERE r.io_request_type = 1 AND r.expected_date = CURDATE()";
+		try (Connection conn = dbManager.getConnetion();
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery()) {
+			if (rs.next())
+				return rs.getInt(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	// 입출고 요청 필터별 조회
+	public List<StockRecord> selectRequestByTypeAndDate(String type, String startDate, String endDate) {
+		List<StockRecord> list = new ArrayList<>();
+		String sql = "SELECT r.io_request_type, r.request_at, r.quantity, p.product_name, l.location_name "
+				+ "FROM io_request r " + "JOIN product p ON r.product_id = p.product_id "
+				+ "JOIN location l ON r.location_id = l.location_id "
+				+ "WHERE r.io_request_type = ? AND r.request_at BETWEEN ? AND ?";
+
+		try (Connection con = dbManager.getConnetion(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setString(1, type);
+			pstmt.setString(2, startDate);
+			pstmt.setString(3, endDate);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				StockRecord record = new StockRecord();
+				record.setProductName(rs.getString("product_name"));
+				record.setAmount(rs.getInt("quantity"));
+				record.setDate(rs.getString("request_at"));
+				record.setCheckResult(rs.getString("io_request_type"));
+				list.add(record);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
 	// 전체 재고 조회
 	public List<Stock> selectAll() {
 		Connection con = null;
@@ -118,89 +131,88 @@ public class StockDAO {
 		return list;
 	}
 
-	//상품별 총합계 테이블 조회
-	public List<Stock> selectProductQuantity(){
+	// 상품별 총합계 테이블 조회
+	public List<Stock> selectProductQuantity() {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ArrayList<Stock> list = new ArrayList<>();
-		
+
 		con = dbManager.getConnetion();
-		
+
 		try {
 			StringBuffer sql = new StringBuffer();
-			sql.append("SELECT p.product_id, p.product_name, p.product_code, p.product_stock, SUM(s.stock_quantity) as total"
-					+ " FROM product p LEFT JOIN stock s ON p.product_id=s.product_id"
-					+ " GROUP BY p.product_id, p.product_name, p.product_stock");
+			sql.append(
+					"SELECT p.product_id, p.product_name, p.product_code, p.product_stock, SUM(s.stock_quantity) as total"
+							+ " FROM product p LEFT JOIN stock s ON p.product_id=s.product_id"
+							+ " GROUP BY p.product_id, p.product_name, p.product_stock");
 			pstmt = con.prepareStatement(sql.toString());
 			rs = pstmt.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				Stock stock = new Stock();
 				Product product = new Product();
-				
+
 				stock.setStock_quantity(rs.getInt("total"));
-				
+
 				product.setProduct_id(rs.getInt("p.product_id"));
 				product.setProduct_name(rs.getString("p.product_name"));
 				product.setProduct_code(rs.getString("p.product_code"));
 				product.setProduct_stock(rs.getInt("p.product_stock"));
 				stock.setProduct(product);
-				
+
 				list.add(stock);
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			dbManager.release(pstmt, rs);
 		}
 		return list;
 	}
-	
-	//카테고리 별 총 재고 수량 파악
-	public List<Map<String, Integer>> selectTotalStockByCategory(){
+
+	// 카테고리 별 총 재고 수량 파악
+	public List<Map<String, Integer>> selectTotalStockByCategory() {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List <Map<String, Integer>> list = new ArrayList<>();
-		
+		List<Map<String, Integer>> list = new ArrayList<>();
+
 		con = dbManager.getConnetion();
-		
+
 		try {
 			StringBuffer sql = new StringBuffer();
 			sql.append("select c.category_name, sum(s.stock_quantity) as total_stock"
 					+ " from stock s join product p on s.product_id = p.product_id"
-					+ " join category c on p.category_id = c.category_id"
-					+ " group by c.category_name"
-					+ " having sum(s.stock_quantity)>0"
-					+ " order by total_stock desc limit 10");
+					+ " join category c on p.category_id = c.category_id" + " group by c.category_name"
+					+ " having sum(s.stock_quantity)>0" + " order by total_stock desc limit 10");
 			pstmt = con.prepareStatement(sql.toString());
-			
+
 			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				Map<String, Integer> map = new HashMap<>();
 				map.put(rs.getString("c.category_name"), rs.getInt("total_stock"));
 				list.add(map);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			dbManager.release(pstmt, rs);
 		}
 
 		return list;
 	}
-	
-	//재고 창고별 상품 총 수량 파악
-	public List<Stock> selectTotalStockByLocation(){
+
+	// 재고 창고별 상품 총 수량 파악
+	public List<Stock> selectTotalStockByLocation() {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		List<Stock> list = new ArrayList<>();
-		
+
 		con = dbManager.getConnetion();
-		
+
 		try {
 			StringBuffer sql = new StringBuffer();
 			sql.append("select l.location_name, sum(s.stock_quantity)"
@@ -208,26 +220,26 @@ public class StockDAO {
 					+ " group by location_name order by sum(s.stock_quantity) desc limit 5");
 			pstmt = con.prepareStatement(sql.toString());
 			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				Stock stock = new Stock();
 				Location location = new Location();
-				
+
 				location.setLocation_name(rs.getString("l.location_name"));
 				stock.setLocation(location);
-				
+
 				stock.setStock_quantity(rs.getInt("sum(s.stock_quantity)"));
 				list.add(stock);
 			}
-		
+
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			dbManager.release(pstmt, rs);
 		}
 		return list;
 	}
-	
+
 	// 재고 추가
 	public void insert(Stock stock) {
 		Connection con = null;
