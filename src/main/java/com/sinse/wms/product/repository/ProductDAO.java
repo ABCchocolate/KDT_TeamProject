@@ -53,9 +53,8 @@ public class ProductDAO {
 	    String sql = "SELECT DISTINCT product_name FROM product";
 
 	    Connection con = dbManager.getConnetion();
-	    try (
-	         PreparedStatement pstmt = con.prepareStatement(sql);
-	         ResultSet rs = pstmt.executeQuery()) {
+	    try (PreparedStatement pstmt = con.prepareStatement(sql);
+	    	ResultSet rs = pstmt.executeQuery()) {
 
 	        while (rs.next()) {
 	            names.add(rs.getString("product_name"));
@@ -71,9 +70,9 @@ public class ProductDAO {
 	    List<String> codes = new ArrayList<>();
 	    String sql = "SELECT DISTINCT product_code FROM product";
 
-	    Connection con = dbManager.getConnetion();
-	    try (
-	         PreparedStatement pstmt = con.prepareStatement(sql);
+	    Connection con =  dbManager.getConnetion();
+	    try (PreparedStatement pstmt = con.prepareStatement(sql);
+
 	         ResultSet rs = pstmt.executeQuery()) {
 
 	        while (rs.next()) {

@@ -1,5 +1,6 @@
 package com.sinse.wms.inbound.view;
 
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -7,10 +8,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import com.sinse.wms.common.Config;
@@ -33,6 +32,7 @@ public class InboundInspectionPage extends BaseContentPage {
     private String status_name = "검수요청";
     
     private OutLineButton bt_reload, bt_approved, bt_denied;
+
 
     public InboundInspectionPage(Color color) {
     	setLayout(new FlowLayout(FlowLayout.CENTER, 0, 30)); // 레이아웃 스타일 설정
@@ -82,6 +82,7 @@ public class InboundInspectionPage extends BaseContentPage {
 	  	p_bt.setPreferredSize(new Dimension(Config.CONTENT_BODY_WIDTH-110, 35));
 	  	p_bt.setOpaque(false);
 	
+
 	  	bt_reload = new OutLineButton("조회", 107, 35, 5, 1, Config.PRIMARY_COLOR, Color.WHITE);
 		bt_approved = new OutLineButton("요청수락", 107, 35, 5, 1, Config.PRIMARY_COLOR, Color.WHITE);
 		bt_denied = new OutLineButton("요청거절", 107, 35, 5, 1, Config.PRIMARY_COLOR, Color.WHITE);

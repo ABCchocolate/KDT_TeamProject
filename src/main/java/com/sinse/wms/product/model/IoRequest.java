@@ -12,11 +12,12 @@ public class IoRequest {
 	private Member request_member_id;
 	private String request_reason;
 	private RequestStatus status; //ststus_id;
-	private Date request_at; // <<  등록버튼 누르는 그 시간
-	private Date expected_date; // << 날짜??? ? Date???? 0000-00-00 
+	private Date request_at; 
+	private Date expected_date;  
 	private Member  member; //approve_member_id;
-	private Date approved_at; // << null로 처리하고 승인 누르면 null -> 승인 누른 시간으로 update
+	private Date approved_at;
 	private String remark;
+	
 	public int getIoRequest_id() {
 		return IoRequest_id;
 	}
