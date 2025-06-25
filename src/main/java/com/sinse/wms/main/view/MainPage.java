@@ -76,12 +76,13 @@ public class MainPage extends BaseContentPage {
 	    icon.setHorizontalAlignment(SwingConstants.CENTER);
 
 	    JLabel name;
-
+	    try {
 	        name = new JLabel(m.getMember_name() + "님 안녕하세요.", SwingConstants.CENTER);
-	    
-	        //	    } catch (NullPointerException e) {
-//	       // name = new JLabel("방문자님 안녕하세요.", SwingConstants.CENTER);
-//	    }
+	    }
+	    catch (NullPointerException e) {
+	    	name = new JLabel("방문자님 안녕하세요.", SwingConstants.CENTER);	 
+	    	System.out.println("member db 연동 오류");
+	    }
 
 	    name.setFont(new Font("맑은 고딕", Font.BOLD, 16));
 	    name.setForeground(new Color(50, 50, 150));

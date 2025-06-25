@@ -9,10 +9,12 @@ import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import com.sinse.wms.common.view.content.BaseContentPage;
+import com.sinse.wms.product.model.Member;
 
 public class Mypage extends BaseContentPage {
 	JPanel p_north; // 로그인 현황 조회
@@ -39,8 +41,10 @@ public class Mypage extends BaseContentPage {
 	
 	JButton bt_pwd; //pwd 변경 버튼
 
-	public Mypage(Color color) {
+	Member m; //현재 로그인한 멤버 정보 불러오기
+	public Mypage(Color color,Member m) {
 		setBackgroundColor(color);
+		this.m = m;
 
 		// TODO("레이아웃 객체 생성 ~ 6/26")=========================
 		Dimension p_north_size = new Dimension(800, 300);
@@ -91,10 +95,10 @@ public class Mypage extends BaseContentPage {
 		p_north.setPreferredSize(p_north_size);
 		p_south.setPreferredSize(p_south_size);
 		south_first_north.setPreferredSize(new Dimension(200, 170));
-		south_first_north.setBorder(new LineBorder(Color.CYAN));
+		//south_first_north.setBorder(new LineBorder(Color.CYAN));
 		
 		south_first_south.setPreferredSize(new Dimension(200,150));
-		south_first_south.setBorder(new LineBorder(Color.CYAN));
+		//south_first_south.setBorder(new LineBorder(Color.CYAN));
 
 		la_my_info.setPreferredSize(titleText);
 		la_my_info.setBorder(new LineBorder(Color.black));
@@ -120,7 +124,7 @@ public class Mypage extends BaseContentPage {
 		
 		
 		la_change_pwd.setPreferredSize(titleText);
-		la_change_pwd.setBorder(new LineBorder(Color.black));
+		//la_change_pwd.setBorder(new LineBorder(Color.black));
 		la_change_pwd.setFont(new Font("SansSerif", Font.BOLD, 23));
 		la_change_pwd.setHorizontalAlignment(JLabel.CENTER);
 		bt_pwd.setPreferredSize(new Dimension(100,50));
@@ -128,14 +132,27 @@ public class Mypage extends BaseContentPage {
 		
 		
 		south_second_center.add(bt_pwd);
+		
+		JLabel log1 = new JLabel("2025-06-25 09:15:33 로그인 성공");
+		JLabel log2 = new JLabel("2025-06-24 22:04:18 로그인 성공");
+		JLabel log3 = new JLabel("2025-06-24 08:49:05 로그인 실패");
+
+		
+
 		//두번째 그리드 패널의 스타일 ========끝!
 		
 		//세번째 그리드 패널의 스타일 시작
 		la_access_log = new JLabel("접속 로그");
 		la_access_log.setPreferredSize(titleText);
-		la_access_log.setBorder(new LineBorder(Color.black));
+		//la_access_log.setBorder(new LineBorder(Color.black));
 		la_access_log.setFont(new Font("SansSerif", Font.BOLD, 23));
 		la_access_log.setHorizontalAlignment(JLabel.CENTER);
+		JPanel logPanel = new JPanel();
+		logPanel.setLayout(new GridLayout(3, 1));
+		logPanel.add(log1);
+		logPanel.add(log2);
+		logPanel.add(log3);
+		
 		
 		//세번째 그리드 패널의 스타일 끝
 		
@@ -158,18 +175,51 @@ public class Mypage extends BaseContentPage {
 				
 				cell.add(la_change_pwd);
 				cell.add(south_second_center);
+				
 			}
 			else if(i == 2) {
-				cell.add(la_access_log);
+				cell.setLayout(new BorderLayout());
+			    cell.add(la_access_log, BorderLayout.NORTH);
+			    cell.add(logPanel, BorderLayout.CENTER);
+
 			}
 		}
 
 		// p_north 경계선 그리기
 		p_north.setBorder(new LineBorder(Color.GRAY));
 
+		
+		
 		setVisible(true);
 		setSize(new Dimension(1200, 1000));
+
+		if (m != null) {
+		    la_user_name.setText(m.getMember_name());
+		    la_user_dept.setText(m.getDept().getDept_name());
+		    la_user_num.setText(String.valueOf(m.getMember_id()));
+		    la_user_id.setText(m.getMember_email());
+		    la_user_ip.setText(getLocalIp() + "  (KST) " + java.time.LocalDate.now());
+
+		}
+
 		// 레이아웃 생성 완료 ========================================
+		
+		bt_pwd.addActionListener(e -> {
+			ChangePassword();
+		});
 	}
+	
+	public void ChangePassword() {
+		JOptionPane.showMessageDialog(this, "비밀번호 변경 기능은 현재 준비 중입니다.");
+	}
+	
+	private String getLocalIp() {
+	    try {
+	        return java.net.InetAddress.getLocalHost().getHostAddress();
+	    } catch (Exception e) {
+	        return "Unknown IP";
+	    }
+	}
+
 
 }
