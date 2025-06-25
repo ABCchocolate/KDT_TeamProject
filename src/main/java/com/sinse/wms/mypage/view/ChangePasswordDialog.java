@@ -14,14 +14,18 @@ import com.sinse.wms.product.repository.MemberDAO;
 
 public class ChangePasswordDialog extends JDialog {
 	Member m;
+
 	public ChangePasswordDialog(JFrame parent, Member m) {
         super(parent, "비밀번호 변경", true);
         this.m = m;
+
         setLayout(new GridLayout(4, 2, 10, 10));
         setSize(400, 250);
         setLocationRelativeTo(parent);
 
+
         // ====== UI 컴포넌트 생성 ======
+
         JLabel currentLabel = new JLabel("현재 비밀번호:");
         JLabel newLabel = new JLabel("새 비밀번호:");
         JLabel confirmLabel = new JLabel("비밀번호 확인:");
@@ -36,6 +40,7 @@ public class ChangePasswordDialog extends JDialog {
         add(newLabel); add(newPwd);
         add(confirmLabel); add(confirmPwd);
         add(new JLabel()); add(btChange);
+
 
         // ====== 버튼 이벤트 ======
         btChange.addActionListener(e -> {
@@ -63,5 +68,7 @@ public class ChangePasswordDialog extends JDialog {
                 JOptionPane.showMessageDialog(this, "비밀번호 변경에 실패했습니다.");
             }
         });
+
 	}
+
 }

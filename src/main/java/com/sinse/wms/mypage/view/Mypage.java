@@ -66,7 +66,9 @@ public class Mypage extends BaseContentPage {
 		p_north = new JPanel();
 		p_south = new JPanel();
 		// ===== 상단 인사 UI 설정 =====
+
 		p_top.setPreferredSize(new Dimension(800, 350));
+
 		p_top.setLayout(new BorderLayout());
 		p_top.setBackground(Color.WHITE);
 		p_top.setBorder(new LineBorder(Color.LIGHT_GRAY, 1, true));
