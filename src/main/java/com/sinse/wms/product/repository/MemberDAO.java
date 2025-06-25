@@ -216,7 +216,7 @@ public class MemberDAO {
 				pstmt.setInt(6, m.getMember_id());
 			}
 			int result = pstmt.executeUpdate();
-			if(result == 0) {
+			if (result == 0) {
 				throw new MemberUpdateException("멥버 수정 실패 result 0");
 			}
 		} catch (SQLException e) {
@@ -239,7 +239,7 @@ public class MemberDAO {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, memberId);
 			int result = pstmt.executeUpdate();
-			if(result == 0) {
+			if (result == 0) {
 				throw new MemberDeleteException("멤버 삭제 실패 result 0");
 			}
 		} catch (SQLException e) {
@@ -249,4 +249,42 @@ public class MemberDAO {
 			dbManager.release(pstmt);
 		}
 	}
+
+	// 현재 비밀번호 확인
+	public boolean checkPassword(int member_id, String inputPwd) {
+		Connection con = null;
+
+		con = dbManager.getConnetion();
+		String sql = "SELECT COUNT(*) FROM member WHERE member_id=? AND member_pwd=?";
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setInt(1, member_id);
+			pstmt.setString(2, inputPwd); // 암호화되어 있다면 여기서 변경 필요
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1) > 0;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	// 새 비밀번호로 업데이트
+	public boolean updatePassword(int member_id, String newPwd) {
+
+		Connection con = null;
+
+		con = dbManager.getConnetion();
+		String sql = "UPDATE member SET member_pwd=? WHERE member_id=?";
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setString(1, newPwd); // 암호화되어 있다면 적용
+			pstmt.setInt(2, member_id);
+			int result = pstmt.executeUpdate();
+			return result > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 }
