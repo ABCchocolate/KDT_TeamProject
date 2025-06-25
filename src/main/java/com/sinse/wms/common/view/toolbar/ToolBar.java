@@ -54,7 +54,7 @@ public class ToolBar extends JPanel {
 		add(search);
 		search.setOnClickListener(() -> {
 			if (this.listener != null) {
-				this.listener.onClickMessageBox();
+				this.listener.onClickSearch();
 			}
 		});
 		add(Box.createVerticalStrut(400));

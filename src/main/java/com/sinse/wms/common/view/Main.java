@@ -23,6 +23,7 @@ import com.sinse.wms.inventory.view.InventoryStatusPage;
 import com.sinse.wms.main.view.MainPage;
 import com.sinse.wms.membermanagement.view.MemberManagementPage;
 import com.sinse.wms.menu.help.view.HelpMenu;
+import com.sinse.wms.menu.search.view.SearchMenu;
 import com.sinse.wms.menu.setting.view.SettingMenu;
 import com.sinse.wms.outbound.view.OutboundInspectionPage;
 import com.sinse.wms.outbound.view.OutboundRequestPage;
@@ -167,6 +168,7 @@ public class Main extends JFrame implements SideMenuClickListener, ToolBarListen
 	@Override
 	public void onClickSearch() {
 		// TODO("툴바 돋보기 아이콘 클릭시 구현");
+		new SearchMenu().setVisible(true);
 	}
 
 	@Override
