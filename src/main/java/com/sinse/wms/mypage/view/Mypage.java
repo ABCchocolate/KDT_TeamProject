@@ -6,11 +6,14 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 
 import com.sinse.wms.common.view.content.BaseContentPage;
@@ -22,6 +25,11 @@ public class Mypage extends BaseContentPage {
 	JPanel south_first_north; // 첫번째 그리드 패널의 상단 패널
 	JPanel south_first_south; // 첫번째 그리드 패널의 하단 패널
 	JPanel south_second_center; //두번째 그리드 패널의 중간 패널
+	
+	JPanel p_top = new JPanel(); // 상단 인사말 영역
+	JLabel la_profile_icon = new JLabel(); // 프로필 아이콘 이미지
+	JLabel la_greeting = new JLabel();     // 인사 텍스트
+
 
 	JLabel la_my_info; // 내 정보보기 라벨
 	JLabel la_my_name; // 내 이름 라벨
@@ -57,7 +65,34 @@ public class Mypage extends BaseContentPage {
 		//전체 패널 ==========
 		p_north = new JPanel();
 		p_south = new JPanel();
-		
+		// ===== 상단 인사 UI 설정 =====
+		p_top.setPreferredSize(new Dimension(800, 280));
+		p_top.setLayout(new BorderLayout());
+		p_top.setBackground(Color.WHITE);
+		p_top.setBorder(new LineBorder(Color.LIGHT_GRAY, 1, true));
+
+		// 프로필 이미지 (임시 원형)
+		la_profile_icon.setPreferredSize(new Dimension(100, 100));
+		URL imageUrl = getClass().getResource("/images/default_avatar_icon.png");
+		la_profile_icon.setIcon(new ImageIcon(imageUrl)); // 또는 기본 아이콘
+		la_profile_icon.setHorizontalAlignment(JLabel.CENTER);
+
+		// 인사 텍스트
+		String name = m != null ? m.getMember_name() : "사용자";
+		la_greeting.setText("<html><div style='text-align: center;'><b>" + name + " 님<br>안녕하세요.</b></div></html>");
+		la_greeting.setFont(new Font("SansSerif", Font.BOLD, 20));
+		la_greeting.setForeground(new Color(36, 104, 160));
+		la_greeting.setHorizontalAlignment(JLabel.CENTER);
+
+		// 구성
+		JPanel centerWrapper = new JPanel(new GridLayout(2, 1));
+		centerWrapper.setOpaque(false);
+		centerWrapper.add(la_profile_icon);
+		centerWrapper.add(la_greeting);
+
+		p_top.add(centerWrapper, BorderLayout.CENTER);
+		add(p_top, BorderLayout.NORTH); // 기존 p_north와 위치 겹치지 않도록 위치 조절
+
 		//그리드의 첫번째 패널 ============
 		south_first_north = new JPanel();
 		south_first_south = new JPanel();
@@ -101,7 +136,7 @@ public class Mypage extends BaseContentPage {
 		//south_first_south.setBorder(new LineBorder(Color.CYAN));
 
 		la_my_info.setPreferredSize(titleText);
-		la_my_info.setBorder(new LineBorder(Color.black));
+		//la_my_info.setBorder(new LineBorder(Color.black));
 		la_my_info.setFont(new Font("SansSerif", Font.BOLD, 23));
 		la_my_info.setHorizontalAlignment(JLabel.CENTER);
 		la_my_name.setPreferredSize(la_size);
@@ -187,7 +222,7 @@ public class Mypage extends BaseContentPage {
 
 		// p_north 경계선 그리기
 		p_north.setBorder(new LineBorder(Color.GRAY));
-
+		p_north.add(p_top);
 		
 		
 		setVisible(true);
@@ -210,8 +245,9 @@ public class Mypage extends BaseContentPage {
 	}
 	
 	public void ChangePassword() {
-		JOptionPane.showMessageDialog(this, "비밀번호 변경 기능은 현재 준비 중입니다.");
+	    new ChangePasswordDialog((JFrame) SwingUtilities.getWindowAncestor(this), m).setVisible(true);
 	}
+
 	
 	private String getLocalIp() {
 	    try {
