@@ -59,7 +59,8 @@ public class RegistPageController {
 			/*-- request_type --*/
 			String io_request_type = view.getCb_type().getSelectedItem().toString();
 			if (io_request_type.equals("타입을 선택하세요.")) {
-				throw new IllegalArgumentException("입출고 타입을 선택해주세요.");
+			} else if(!io_request_type.equals("입고")) {
+				throw new IllegalArgumentException("타입을 입고로 선택해주세요.");					
 			}
 	        ioRequest.setIoRequest_type(io_request_type);
 	        
