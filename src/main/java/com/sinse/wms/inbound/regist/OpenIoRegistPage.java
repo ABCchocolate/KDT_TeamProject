@@ -11,9 +11,9 @@ public class OpenIoRegistPage {
 	private IoRegistPageLayout registPage = null;
 	
 	// 등록 시 새 화면(JDialog) 띄우기
-	public OpenIoRegistPage() {
+	public OpenIoRegistPage(String status_name) {
 		if(registPage == null) {
-			registPage = new IoRegistPageLayout(); // 중복 방지
+			registPage = new IoRegistPageLayout(status_name); // 중복 방지
 			registPage.addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosed(WindowEvent e) {

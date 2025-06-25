@@ -16,13 +16,44 @@ import com.sinse.wms.product.model.ProductUnit;
 
 public class ProductDAO {
 	DBManager dbManager = DBManager.getInstance();
-
+	
+	// 품목명으로 품목 조회
+	public Product findByName(String name) {
+		Product product = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT * FROM product WHERE product_name = ?";
+		
+		Connection con = dbManager.getConnetion();
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, name);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				product = new Product();
+				product.setProduct_id(rs.getInt("product_id"));
+				product.setProduct_code(rs.getString("product_code"));
+				product.setProduct_name(rs.getString("product_name"));
+				product.setProduct_description(rs.getString("product_description"));
+				product.setProduct_price(rs.getInt("product_price"));
+				product.setProduct_stock(rs.getInt("product_stock"));
+				product.setRegdate(rs.getDate("product_regdate"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return product;
+	}  
+	
+	
 	// 품목명 조회
 	public List<String> selectProductNames() {
 	    List<String> names = new ArrayList<>();
 	    String sql = "SELECT DISTINCT product_name FROM product";
 
-	    try (Connection con = dbManager.getConnetion();
+	    Connection con = dbManager.getConnetion();
+	    try (
 	         PreparedStatement pstmt = con.prepareStatement(sql);
 	         ResultSet rs = pstmt.executeQuery()) {
 
@@ -40,7 +71,8 @@ public class ProductDAO {
 	    List<String> codes = new ArrayList<>();
 	    String sql = "SELECT DISTINCT product_code FROM product";
 
-	    try (Connection con = dbManager.getConnetion();
+	    Connection con = dbManager.getConnetion();
+	    try (
 	         PreparedStatement pstmt = con.prepareStatement(sql);
 	         ResultSet rs = pstmt.executeQuery()) {
 
@@ -52,6 +84,7 @@ public class ProductDAO {
 	    }
 	    return codes;
 	}
+	
 	// 전체 상품 조회
 	public List<Product> selectAll() {
 		Connection con = null;
@@ -75,7 +108,7 @@ public class ProductDAO {
 				p.setProduct_description(rs.getString("product_desription"));
 				p.setProduct_price(rs.getInt("product_price"));
 				p.setProduct_stock(rs.getInt("product_stock"));
-				p.setRegdate(rs.getDate("regdate"));
+				p.setRegdate(rs.getDate("product_regdate"));
 
 				// 연관 객체는 PK만 설정 (조인은 추후 확장 가능)
 				Category c = new Category();
@@ -113,7 +146,7 @@ public class ProductDAO {
 
 		try {
 			StringBuffer sql = new StringBuffer();
-			sql.append("INSERT INTO product(product_code, product_name, product_desription, product_price, product_stock, regdate, category_id, company_id, location_id, unit_id) ");
+			sql.append("INSERT INTO product(product_code, product_name, product_desription, product_price, product_stock, product_regdate, category_id, company_id, location_id, unit_id) ");
 			sql.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 			pstmt = con.prepareStatement(sql.toString());
@@ -146,7 +179,7 @@ public class ProductDAO {
 		try {
 			StringBuffer sql = new StringBuffer();
 			sql.append("UPDATE product SET product_code = ?, product_name = ?, product_desription = ?, ");
-			sql.append("product_price = ?, product_stock = ?, regdate = ?, ");
+			sql.append("product_price = ?, product_stock = ?, product_regdate = ?, ");
 			sql.append("category_id = ?, company_id = ?, location_id = ?, unit_id = ? ");
 			sql.append("WHERE product_id = ?");
 

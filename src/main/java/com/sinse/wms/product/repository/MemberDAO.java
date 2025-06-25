@@ -11,11 +11,58 @@ import java.util.List;
 import com.sinse.wms.common.util.DBManager;
 import com.sinse.wms.product.model.Auth;
 import com.sinse.wms.product.model.Dept;
+import com.sinse.wms.product.model.Location;
 import com.sinse.wms.product.model.Member;
 
 public class MemberDAO {
 	DBManager dbManager = DBManager.getInstance();
+	
+	// 멤버명으로 멤버 조회
+	public Member findByName(String name) {
+		Member member = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT * FROM member WHERE member_name = ?";
+		
+		Connection con = dbManager.getConnetion();
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, name);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				member = new Member();
+				member.setMember_id(rs.getInt("member_id"));
+				member.setMember_password(rs.getString("member_password"));
+				member.setMember_email(rs.getString("member_email"));
+				member.setMember_name(rs.getString("member_name"));
+				member.setMemberhiredate(rs.getDate("member_hiredate"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return member;
+	}  
+	
+	// 멤버명 조회
+	public List<String> selectMemberNames() {
+	    List<String> names = new ArrayList<>();
+	    String sql = "SELECT DISTINCT member_name FROM member	";
 
+	    Connection con = dbManager.getConnetion();
+	    try (
+	         PreparedStatement pstmt = con.prepareStatement(sql);
+	         ResultSet rs = pstmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            names.add(rs.getString("member_name"));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return names;
+	}
 	
 	//로그인 기능 구현을 위한 특정 회원 조회
 	//조건 : member_email 와 memeber_Pwd가 같은 회원
@@ -80,7 +127,7 @@ public class MemberDAO {
 				m.setMember_password(rs.getString("member_password"));
 				m.setMember_email(rs.getString("member_email"));
 				m.setMember_name(rs.getString("member_name"));
-				m.setMemberhiredate(rs.getDate("memberhiredate"));
+				m.setMemberhiredate(rs.getDate("member_hiredate"));
 
 				Dept d = new Dept();
 				d.setDept_id(rs.getInt("dept_id"));
@@ -108,7 +155,7 @@ public class MemberDAO {
 		con = dbManager.getConnetion();
 
 		try {
-			String sql = "INSERT INTO member(member_password, member_email, member_name, memberhiredate, dept_id, auth_id) VALUES (?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO member(member_password, member_email, member_name, member_hiredate, dept_id, auth_id) VALUES (?, ?, ?, ?, ?, ?)";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, m.getMember_password());
 			pstmt.setString(2, m.getMember_email());
@@ -132,7 +179,7 @@ public class MemberDAO {
 		con = dbManager.getConnetion();
 
 		try {
-			String sql = "UPDATE member SET member_password = ?, member_email = ?, member_name = ?, memberhiredate = ?, dept_id = ?, auth_id = ? WHERE member_id = ?";
+			String sql = "UPDATE member SET member_password = ?, member_email = ?, member_name = ?, member_hiredate = ?, dept_id = ?, auth_id = ? WHERE member_id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, m.getMember_password());
 			pstmt.setString(2, m.getMember_email());

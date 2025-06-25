@@ -314,12 +314,11 @@ public class IoRequestDAO {
     }
 
     // 입출고 요청 등록
-    public void insert(IoRequest io) {
-        Connection con = dbManager.getConnetion();
+    public void insert(IoRequest io, Connection con) {
         PreparedStatement pstmt = null;
 
         try {
-            String sql = "INSERT INTO io_request (iorequest_type, product_id, quantity, location_id, request_member_id, request_reason, status_id, request_at, expected_date, approve_member_id, approve_at, remark) "
+            String sql = "INSERT INTO io_request (io_request_type, product_id, quantity, location_id, request_member_id, request_reason, status_id, request_at, expected_date, approve_member_id, approved_at, remark) "
                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             pstmt = con.prepareStatement(sql);
