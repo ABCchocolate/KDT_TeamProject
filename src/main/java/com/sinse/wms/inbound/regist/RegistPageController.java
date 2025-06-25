@@ -2,9 +2,6 @@ package com.sinse.wms.inbound.regist;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -164,7 +161,7 @@ public class RegistPageController {
 		view = null;
 	}
 	
-	private void setCombo() {
+	public void setCombo() {
 		ProductDAO productDAO = new ProductDAO(); 
 		LocationDAO locationDAO = new LocationDAO();
 		MemberDAO memberDAO = new MemberDAO(); 

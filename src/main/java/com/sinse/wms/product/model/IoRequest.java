@@ -1,7 +1,6 @@
 package com.sinse.wms.product.model;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
 
 public class IoRequest {
 	private int IoRequest_id;
