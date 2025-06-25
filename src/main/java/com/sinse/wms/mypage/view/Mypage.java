@@ -3,6 +3,7 @@ package com.sinse.wms.mypage.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 
@@ -115,6 +116,8 @@ public class Mypage extends BaseContentPage {
 		south_second_center = new JPanel();
 		
 		south_second_center.setPreferredSize(new Dimension(200,150));
+		south_second_center.setLayout(new FlowLayout());
+		
 		
 		la_change_pwd.setPreferredSize(titleText);
 		la_change_pwd.setBorder(new LineBorder(Color.black));
