@@ -31,5 +31,6 @@ public enum Menu {
 	REPORT,
 	USER_MANAGEMENT,
 	ADD_REQUEST,
-	HELP
+	HELP,
+	SETTING
 }
