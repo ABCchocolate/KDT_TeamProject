@@ -34,7 +34,6 @@ public enum Menu {
 	USER_MANAGEMENT,
 	ADD_REQUEST,
 	MY_PAGE,
-	SEARCH,
 	HELP,
 	SETTING
 }
