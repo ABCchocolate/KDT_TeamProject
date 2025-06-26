@@ -193,19 +193,11 @@ public class Main extends JFrame implements SideMenuClickListener, ToolBarListen
         this.cardLayout.show(this.bodyContent, Menu.MY_PAGE.name());
     }
 
-<<<<<<< HEAD
 	@Override
 	public void onClickMessageBox() {
 		// TODO("툴바 메시지 아이콘 클릭시 구현");
 		this.cardLayout.show(this.bodyContent,Menu.CHAT.name());
 	}
-=======
-    @Override
-    public void onClickMessageBox() {
-        // TODO("툴바 메시지 아이콘 클릭시 구현");
-    }
->>>>>>> origin/Dev
-
 	@Override
 	public void onClickSearch() {
 		//한 번만 실행
