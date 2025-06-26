@@ -9,9 +9,8 @@ import java.sql.SQLException;
 import com.sinse.wms.common.Config;
 
 public class DBManager {
-
+	private Connection con;
     private static DBManager instance;
-    Connection con = null;
 
     private DBManager() {
         try {
