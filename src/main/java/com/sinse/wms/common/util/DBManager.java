@@ -10,12 +10,15 @@ import com.sinse.wms.common.Config;
 
 public class DBManager {
 
+	private Connection con;
     private static DBManager instance;
 
     private DBManager() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
+            con = DriverManager.getConnection(Config.URL, Config.USER, Config.PWD);
+        } catch (ClassNotFoundException | SQLException e) {
+
             e.printStackTrace();
         }
     }
@@ -29,13 +32,10 @@ public class DBManager {
 
     // 💡 매번 새로운 커넥션을 생성
     public Connection getConnetion() {
-        try {
-            return DriverManager.getConnection(Config.URL, Config.USER, Config.PWD);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+		return con;
+	}
+
+
 
     // 💨 DML용 release
     public void release(PreparedStatement pstmt) {
