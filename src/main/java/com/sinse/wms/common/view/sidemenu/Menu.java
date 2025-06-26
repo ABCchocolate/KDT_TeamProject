@@ -16,6 +16,8 @@ package com.sinse.wms.common.view.sidemenu;
  * 	<li>STATISTICS - 통계</li>
  * 	<li>REPORT - 보고서</li>
  * 	<li>USER_MANAGEMENT- 사용자 관리</li>
+ * 
+ * 	<li>MY_PAGE - 마이페이지 (사용자) </li>
  * </ul>
  */
 public enum Menu {
@@ -31,7 +33,13 @@ public enum Menu {
 	REPORT,
 	USER_MANAGEMENT,
 	ADD_REQUEST,
+<<<<<<< HEAD
 	SEARCH,
 	HELP,
 	SETTING
+=======
+	MY_PAGE,
+	HELP
+
+>>>>>>> 7ae16be66a4b87a7fc5443b0cdeb61f3548d63b4
 }
