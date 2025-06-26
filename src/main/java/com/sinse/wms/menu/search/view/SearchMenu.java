@@ -259,6 +259,7 @@ public class SearchMenu extends JFrame{
 		resultLabel.setText("검색어를 입력해주세요.");		//검색 결과 창 초기화
 		scroll.setVisible(false);
 		this.dispose(); 		// 창 닫기
+		instance = null;
 	}
 	
 	//싱글톤 처리 - 한 번만 실행
