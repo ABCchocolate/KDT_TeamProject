@@ -35,8 +35,6 @@ public class DBManager {
 		return con;
 	}
 
-
-
     // 💨 DML용 release
     public void release(PreparedStatement pstmt) {
         if (pstmt != null) {
