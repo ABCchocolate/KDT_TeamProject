@@ -16,12 +16,8 @@ package com.sinse.wms.common.view.sidemenu;
  * 	<li>STATISTICS - 통계</li>
  * 	<li>REPORT - 보고서</li>
  * 	<li>USER_MANAGEMENT- 사용자 관리</li>
-<<<<<<< HEAD
- * 
- * 	<li>MY_PAGE - 마이페이지 (사용자) </li>
-=======
  * 	<li>PRODUCT_MANAGEMENT - 상품 관리</li>
->>>>>>> 23d188d (상품 관리 페이지 추가)
+ * 	<li>MY_PAGE - 마이페이지 (사용자) </li>
  * </ul>
  */
 public enum Menu {
