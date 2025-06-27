@@ -33,6 +33,7 @@ import com.sinse.wms.product.model.Member;
 import com.sinse.wms.report.view.ReportPage;
 import com.sinse.wms.statistic.view.StatisticPage;
 
+
 public class Main extends JFrame implements SideMenuClickListener, ToolBarListener {
 	private ToolBar toolbar;
 	private SideBar sidebar;
@@ -144,10 +145,11 @@ public class Main extends JFrame implements SideMenuClickListener, ToolBarListen
 		this.bodyContent.add(new StatisticPage(), Menu.STATISTICS.name());
 		this.bodyContent.add(new ReportPage(Color.white), Menu.REPORT.name()); // 통계 및 보고서 현황 페이지
 		this.bodyContent.add(new MemberManagementPage(), Menu.USER_MANAGEMENT.name());
-		this.bodyContent.add(new Mypage(Color.white, m), Menu.MY_PAGE.name());
-		this.bodyContent.add(new HelpMenu(), Menu.HELP.name()); // 도움말 페이지
-		this.bodyContent.add(new SettingMenu(), Menu.SETTING.name()); // 환경설정 페이지
-		this.bodyContent.add(new Chat(), Menu.CHAT.name());
+		this.bodyContent.add(new Mypage(Color.white,m), Menu.MY_PAGE.name());	
+		this.bodyContent.add(new HelpMenu(), Menu.HELP.name());	//도움말 페이지
+		this.bodyContent.add(new SettingMenu(), Menu.SETTING.name());	//환경설정 페이지
+		this.bodyContent.add(new Chat(),Menu.CHAT.name());
+
 
 	}
 
@@ -216,7 +218,7 @@ public class Main extends JFrame implements SideMenuClickListener, ToolBarListen
 	@Override
 	public void onClickMessageBox() {
 		// TODO("툴바 메시지 아이콘 클릭시 구현");
-		this.cardLayout.show(this.bodyContent, Menu.CHAT.name());
+		this.cardLayout.show(this.bodyContent,Menu.CHAT.name());
 	}
 
 	@Override
@@ -236,5 +238,4 @@ public class Main extends JFrame implements SideMenuClickListener, ToolBarListen
 	public void onClickSettings() {
 		this.cardLayout.show(this.bodyContent, Menu.SETTING.name());
 	}
-
 }

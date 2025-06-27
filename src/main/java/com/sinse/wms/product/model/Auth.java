@@ -4,6 +4,7 @@ public class Auth {
 	private int auth_id;
 	private String auth_name;
 	private int auth_flag;
+
 	public int getAuth_id() {
 		return auth_id;
 	}
