@@ -19,7 +19,7 @@ import com.sinse.wms.product.model.ProductUnit;
 
 public class ProductDAO {
 	DBManager dbManager = DBManager.getInstance();
-
+	
 	// 품목명으로 품목 조회
 	public Product findByName(String name) {
 		Product product = null;
@@ -34,7 +34,6 @@ public class ProductDAO {
 		
 		Connection con = dbManager.getConnetion();
 		try {
-			pstmt = con.prepareStatement(sql.toString());
 			pstmt = con.prepareStatement(sql.toString());
 			pstmt.setString(1, name);
 			rs = pstmt.executeQuery();
@@ -59,12 +58,13 @@ public class ProductDAO {
 			dbManager.release(pstmt, rs);
 		}
 		return product;
-	}
-
+	}  
+	
+	
 	// 품목명 조회
 	public List<String> selectProductNames() {
-		List<String> names = new ArrayList<>();
-		String sql = "SELECT DISTINCT product_name FROM product";
+	    List<String> names = new ArrayList<>();
+	    String sql = "SELECT DISTINCT product_name FROM product";
 
 		Connection con = dbManager.getConnetion();
 		try (PreparedStatement pstmt = con.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
@@ -179,7 +179,6 @@ public class ProductDAO {
 				p.setProduct_id(rs.getInt("product_id"));
 				p.setProduct_code(rs.getString("product_code"));
 				p.setProduct_name(rs.getString("product_name"));
-				p.setProduct_description(rs.getString("product_description"));
 				p.setProduct_description(rs.getString("product_description"));
 				p.setProduct_price(rs.getInt("product_price"));
 				p.setProduct_stock(rs.getInt("product_stock"));
