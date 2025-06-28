@@ -94,6 +94,7 @@ public class MemberManagementPage extends BaseContentPage implements MemberInfoD
 			MemberInfoDialog memberInfoDialog =  new MemberInfoDialog(JOptionPane.getFrameForComponent(this), this);
 			setDialogComboBoxData(memberInfoDialog);
 			memberInfoDialog.setMember(null);
+			memberInfoDialog.initView();
 			memberInfoDialog.setVisible(true);
 		});
 		this.obt_modify_user.setEnabled(false);
@@ -101,6 +102,7 @@ public class MemberManagementPage extends BaseContentPage implements MemberInfoD
 			MemberInfoDialog memberInfoDialog =  new MemberInfoDialog(JOptionPane.getFrameForComponent(this), this);
 			setDialogComboBoxData(memberInfoDialog);
 			memberInfoDialog.setMember(selectedMember);
+			memberInfoDialog.initView();
 			memberInfoDialog.setVisible(true);
 		});
 		this.obt_delete_user.setEnabled(false);
