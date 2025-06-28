@@ -83,11 +83,11 @@ public class ProductTablePanel extends JPanel {
 		this.tableModel = new ProductManagementTableModel();
 		this.tb_product = new JTable(this.tableModel);
 		this.tb_product.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		this.tb_product.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				onClickProductTable();
+		this.tb_product.getSelectionModel().addListSelectionListener(e -> {
+			if (!e.getValueIsAdjusting()) {
+				return;
 			}
+			onClickProductTable();
 		});
 		this.sp_product_scroll = new JScrollPane(this.tb_product);
 

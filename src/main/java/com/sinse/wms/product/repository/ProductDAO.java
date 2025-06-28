@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sinse.wms.common.exception.ProductDeleteException;
+import com.sinse.wms.common.exception.ProductInsertException;
 import com.sinse.wms.common.exception.ProductSelectException;
 import com.sinse.wms.common.exception.ProductUpdateException;
 import com.sinse.wms.common.util.DBManager;
@@ -108,7 +109,7 @@ public class ProductDAO {
 		try {
 			StringBuffer sql = new StringBuffer();
 			sql.append(
-					"SELECT p.product_id, p.product_code, p.product_name, p.product_description, p.product_price, p.product_stock, p.product_regdate, p.image_id, ca.category_id, ca.category_name, c.company_id, c.company_name , pu.unit_id, pu.unit_name, l.location_id , l.location_name FROM product p INNER JOIN category ca ON p.category_id = ca.category_id INNER JOIN location l ON p.location_id = l.location_id INNER JOIN product_unit pu ON p.unit_id = pu.unit_id LEFT JOIN company c ON p.company_id = c.company_id");
+					"SELECT p.product_id, p.product_code, p.product_name, p.product_description, p.product_price, p.product_stock, p.product_regdate, p.image_id, ca.category_id, ca.category_name, c.company_id, c.company_name , pu.unit_id, pu.unit_name, l.location_id , l.location_name FROM product p INNER JOIN category ca ON p.category_id = ca.category_id INNER JOIN location l ON p.location_id = l.location_id INNER JOIN product_unit pu ON p.unit_id = pu.unit_id LEFT JOIN company c ON p.company_id = c.company_id ORDER BY p.product_id ASC");
 			pstmt = con.prepareStatement(sql.toString());
 			rs = pstmt.executeQuery();
 
@@ -169,7 +170,7 @@ public class ProductDAO {
 					"SELECT p.product_id, p.product_code, p.product_name, p.product_description, p.product_price, p.product_stock, p.product_regdate, p.image_id, ca.category_id, ca.category_name, c.company_id, c.company_name , pu.unit_id, pu.unit_name, l.location_id , l.location_name FROM product p INNER JOIN category ca ON p.category_id = ca.category_id INNER JOIN location l ON p.location_id = l.location_id INNER JOIN product_unit pu ON p.unit_id = pu.unit_id LEFT JOIN company c ON p.company_id = c.company_id");
 			sql.append(" WHERE ");
 			sql.append(columnName);
-			sql.append(" LIKE ?");
+			sql.append(" LIKE ? ORDER BY p.product_id ASC");
 			pstmt = con.prepareStatement(sql.toString());
 			pstmt.setString(1, input + "%");
 			rs = pstmt.executeQuery();
@@ -217,7 +218,7 @@ public class ProductDAO {
 	}
 
 	// 상품 추가
-	public void insert(Product p) {
+	public void insert(Product p) throws ProductInsertException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
