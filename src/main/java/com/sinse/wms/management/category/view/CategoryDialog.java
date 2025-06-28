@@ -1,5 +1,7 @@
 package com.sinse.wms.management.category.view;
 
+import com.sinse.wms.common.exception.CategoryInsertException;
+import com.sinse.wms.common.exception.CategoryUpdateException;
 import com.sinse.wms.common.exception.CompanyInsertException;
 import com.sinse.wms.common.exception.CompanyUpdateException;
 import com.sinse.wms.management.BaseEtcDialog;
@@ -36,7 +38,7 @@ public class CategoryDialog extends BaseEtcDialog<Category> {
 			categoryDAO.insert(insertCategory);
 			JOptionPane.showMessageDialog(null, "등록 완료 되었습니다.");
 			disposeWithComplete();
-		} catch (CompanyInsertException e) {
+		} catch (CategoryInsertException e) {
 			JOptionPane.showMessageDialog(null, "등록 실패 되었습니다.");
 		}
 	}
@@ -51,10 +53,10 @@ public class CategoryDialog extends BaseEtcDialog<Category> {
 			Category updateCategory = new Category();
 			updateCategory.setCategory_id(this.data.getCategory_id());
 			updateCategory.setCategory_name(this.tf_input.getText().trim());
-			categoryDAO.insert(updateCategory);
+			categoryDAO.update(updateCategory);
 			JOptionPane.showMessageDialog(null, "수정 완료 되었습니다.");
 			disposeWithComplete();
-		} catch (CompanyUpdateException e) {
+		} catch (CategoryUpdateException e) {
 			JOptionPane.showMessageDialog(null, "수정 실패 되었습니다.");
 		}
 	}

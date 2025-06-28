@@ -2,6 +2,8 @@ package com.sinse.wms.management.productunit.view;
 
 import com.sinse.wms.common.exception.CompanyInsertException;
 import com.sinse.wms.common.exception.CompanyUpdateException;
+import com.sinse.wms.common.exception.ProductUnitInsertException;
+import com.sinse.wms.common.exception.ProductUnitUpdateException;
 import com.sinse.wms.management.BaseEtcDialog;
 import com.sinse.wms.product.model.ProductUnit;
 import com.sinse.wms.product.repository.ProductUnitDAO;
@@ -36,7 +38,7 @@ public class ProductUnitDialog extends BaseEtcDialog<ProductUnit> {
 			productUnitDAO.insert(insertProductUnit);
 			JOptionPane.showMessageDialog(null, "등록 완료 되었습니다.");
 			disposeWithComplete();
-		} catch (CompanyInsertException e) {
+		} catch (ProductUnitInsertException e) {
 			JOptionPane.showMessageDialog(null, "등록 실패 되었습니다.");
 		}
 	}
@@ -51,10 +53,10 @@ public class ProductUnitDialog extends BaseEtcDialog<ProductUnit> {
 			ProductUnit updateProductUnit = new ProductUnit();
 			updateProductUnit.setUnit_id(this.data.getUnit_id());
 			updateProductUnit.setUnit_name(this.tf_input.getText().trim());
-			productUnitDAO.insert(updateProductUnit);
+			productUnitDAO.update(updateProductUnit);
 			JOptionPane.showMessageDialog(null, "수정 완료 되었습니다.");
 			disposeWithComplete();
-		} catch (CompanyUpdateException e) {
+		} catch (ProductUnitUpdateException e) {
 			JOptionPane.showMessageDialog(null, "수정 실패 되었습니다.");
 		}
 	}

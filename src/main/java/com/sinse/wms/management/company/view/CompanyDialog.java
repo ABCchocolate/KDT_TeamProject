@@ -51,7 +51,7 @@ public class CompanyDialog extends BaseEtcDialog<Company> {
 			Company updateCompany = new Company();
 			updateCompany.setCompany_id(this.data.getCompany_id());
 			updateCompany.setCompany_name(this.tf_input.getText().trim());
-			companyDAO.insert(updateCompany);
+			companyDAO.update(updateCompany);
 			JOptionPane.showMessageDialog(null, "수정 완료 되었습니다.");
 			disposeWithComplete();
 		} catch (CompanyUpdateException e) {

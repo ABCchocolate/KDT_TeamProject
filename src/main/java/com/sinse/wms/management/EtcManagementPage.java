@@ -18,12 +18,13 @@ public class EtcManagementPage extends BaseContentPage {
 		setLayout(new GridLayout(2, 2, 10, 10));
 
 		this.categoryManagementPanel = new CategoryManagementPanel();
-		this.categoryManagementPanel.setModel();
 		this.companyManagementPanel = new CompanyManagementPanel();
-		this.companyManagementPanel.setModel();
 		this.productUnitManagementPanel = new ProductUnitManagementPanel();
-		this.productUnitManagementPanel.setModel();
 		this.locationManagementPanel = new LocationManagementPanel();
+
+		this.categoryManagementPanel.setModel();
+		this.companyManagementPanel.setModel();
+		this.productUnitManagementPanel.setModel();
 		this.locationManagementPanel.setModel();
 
 		add(this.categoryManagementPanel);

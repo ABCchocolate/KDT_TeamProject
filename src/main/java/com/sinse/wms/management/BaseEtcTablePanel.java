@@ -6,35 +6,30 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.util.List;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.table.TableModel;
 
 import com.sinse.wms.common.view.button.OutLineButton;
 
-public abstract class BaseEtcTablePanel<T> extends JPanel {
+public abstract class BaseEtcTablePanel<T, DAO> extends JPanel {
 	protected JLabel title;
 	protected JPanel p_searchBarWrapper;
 	protected JPanel p_buttonBarWrapper;
-	private JTextField tf_input;
-	private JScrollPane sp_tableScroll;
+	protected JTextField tf_input;
+	protected JScrollPane sp_tableScroll;
 	protected JTable tb_dataTable;
-	private OutLineButton obt_search;
-	private OutLineButton obt_add;
-	private OutLineButton obt_modify;
-	private OutLineButton obt_delete;
-	protected List<T> data;
-	protected T selectedData;
+	protected OutLineButton obt_search;
+	protected OutLineButton obt_add;
+	protected OutLineButton obt_modify;
+	protected OutLineButton obt_delete;
+	protected List<T> data = null;
+	protected T selectedData = null;
+	protected DAO currentDAO;
 
-	public BaseEtcTablePanel() {
+	public BaseEtcTablePanel(DAO dao) {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBackground(Color.WHITE);
+		this.currentDAO = dao;
 		this.title = new JLabel(getTitle(), SwingConstants.LEFT);
 		this.title.setFont(new Font("Default", Font.BOLD, 20));
 		this.title.setMaximumSize(new Dimension(200, 50));
@@ -43,7 +38,7 @@ public abstract class BaseEtcTablePanel<T> extends JPanel {
 		this.p_buttonBarWrapper = new JPanel();
 		this.p_buttonBarWrapper.setLayout(new BoxLayout(this.p_buttonBarWrapper, BoxLayout.X_AXIS));
 		this.p_buttonBarWrapper.setBackground(getBackground());
-		this.p_buttonBarWrapper.setMaximumSize(new Dimension(200, 30));
+		this.p_buttonBarWrapper.setMaximumSize(new Dimension(250, 30));
 		this.p_buttonBarWrapper.setAlignmentX(Component.LEFT_ALIGNMENT);
 		this.obt_add = new OutLineButton("등록");
 		this.obt_add.setMaximumSize(new Dimension(100, 30));
@@ -81,6 +76,7 @@ public abstract class BaseEtcTablePanel<T> extends JPanel {
 		this.p_searchBarWrapper.add(this.obt_search);
 
 		this.tb_dataTable = new JTable();
+		this.tb_dataTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.sp_tableScroll = new JScrollPane(this.tb_dataTable);
 		this.sp_tableScroll.setBackground(getBackground());
 
@@ -92,10 +88,13 @@ public abstract class BaseEtcTablePanel<T> extends JPanel {
 		add(Box.createVerticalStrut(10));
 		add(this.sp_tableScroll);
 		init();
+		this.data = getData();
 		setOnSelected();
 	}
 
 	protected abstract void init();
+
+	protected abstract List<T> getData();
 
 	protected abstract TableModel getTableModel();
 
@@ -117,15 +116,12 @@ public abstract class BaseEtcTablePanel<T> extends JPanel {
 
 	protected void setModel() {
 		this.tb_dataTable.setModel(getTableModel());
-		this.tb_dataTable.updateUI();
+		this.tb_dataTable.revalidate();
+		this.tb_dataTable.repaint();
 	}
 
 	protected String getInput() {
 		return this.tf_input.getText().trim();
-	}
-
-	protected void setAddButtonEnable(boolean enable) {
-		this.obt_add.setEnabled(enable);
 	}
 
 	protected void setModifyButtonEnable(boolean enable) {
@@ -157,8 +153,8 @@ public abstract class BaseEtcTablePanel<T> extends JPanel {
 		});
 	}
 
-	protected void updateTableUi() {
-		this.tb_dataTable.revalidate();
-		this.tb_dataTable.repaint();
+	protected void refresh() {
+		this.data = getData();
+		setModel();
 	}
 }

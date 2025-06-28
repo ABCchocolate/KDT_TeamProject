@@ -2,6 +2,8 @@ package com.sinse.wms.management.location.view;
 
 import com.sinse.wms.common.exception.CompanyInsertException;
 import com.sinse.wms.common.exception.CompanyUpdateException;
+import com.sinse.wms.common.exception.LocationInsertException;
+import com.sinse.wms.common.exception.LocationUpdateException;
 import com.sinse.wms.management.BaseEtcDialog;
 import com.sinse.wms.product.model.Location;
 import com.sinse.wms.product.repository.LocationDAO;
@@ -36,7 +38,7 @@ public class LocationDialog extends BaseEtcDialog<Location> {
             locationDAO.insert(insertLocation);
             JOptionPane.showMessageDialog(null, "등록 완료 되었습니다.");
             disposeWithComplete();
-        } catch (CompanyInsertException e) {
+        } catch (LocationInsertException e) {
             JOptionPane.showMessageDialog(null, "등록 실패 되었습니다.");
         }
     }
@@ -51,10 +53,10 @@ public class LocationDialog extends BaseEtcDialog<Location> {
             Location updateLocation = new Location();
             updateLocation.setLocation_id(this.data.getLocation_id());
             updateLocation.setLocation_name(this.tf_input.getText().trim());
-            locationDAO.insert(updateLocation);
+            locationDAO.update(updateLocation);
             JOptionPane.showMessageDialog(null, "수정 완료 되었습니다.");
             disposeWithComplete();
-        } catch (CompanyUpdateException e) {
+        } catch (LocationUpdateException e) {
             JOptionPane.showMessageDialog(null, "수정 실패 되었습니다.");
         }
     }
